@@ -1,0 +1,74 @@
+name: Build APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Create package.json
+        run: |
+          cat > package.json <<'EOF'
+          {
+            "name": "kalkulator-gadai",
+            "version": "1.0.0",
+            "private": true,
+            "scripts": {
+              "build": "echo Build APK"
+            },
+            "dependencies": {
+              "@capacitor/core": "^7.4.0",
+              "@capacitor/android": "^7.4.0"
+            },
+            "devDependencies": {
+              "@capacitor/cli": "^7.4.0"
+            }
+          }
+          EOF
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create Capacitor config
+        run: |
+          cat > capacitor.config.ts <<'EOF'
+          import type { CapacitorConfig } from '@capacitor/cli';
+
+          const config: CapacitorConfig = {
+            appId: 'com.gadaioganbaru.kalkulator',
+            appName: 'Kalkulator Gadai Ogan Baru',
+            webDir: 'www'
+          };
+
+          export default config;
+          EOF
+
+      - name: Add Android
+        run: npx cap add android
+
+      - name: Copy web files
+        run: npx cap copy android
+
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: kalkulator-gadai-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
