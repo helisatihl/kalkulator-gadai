@@ -12,14 +12,19 @@ jobs:
 
     steps:
 
-      - name: Checkout repository
+      # 1. Ambil kode dari repository
+      - name: Checkout
         uses: actions/checkout@v4
 
+
+      # 2. Install Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
+
+      # 3. Buat package.json
       - name: Create package.json
         run: |
           cat > package.json <<'EOF'
@@ -32,14 +37,24 @@ jobs:
               "@capacitor/android": "^7.4.3"
             },
             "devDependencies": {
-              "@capacitor/cli": "^7.4.3"
+              "@capacitor/cli": "^7.4.3",
+              "typescript": "^5.8.3"
             }
           }
           EOF
 
-      - name: Install Capacitor
+
+      # 4. Install semua dependency
+      - name: Install dependencies
         run: npm install
 
+
+      # 5. Cek TypeScript
+      - name: Check TypeScript
+        run: npx tsc --version
+
+
+      # 6. Buat konfigurasi Capacitor
       - name: Create Capacitor config
         run: |
           cat > capacitor.config.ts <<'EOF'
@@ -54,23 +69,49 @@ jobs:
           export default config;
           EOF
 
-      - name: Verify HTML
+
+      # 7. Pastikan index.html ada
+      - name: Check HTML
         run: |
+          echo "Memeriksa file aplikasi..."
+
           if [ ! -f "www/index.html" ]; then
             echo "ERROR: www/index.html tidak ditemukan!"
+            echo "Pastikan struktur repository:"
+            echo "www/index.html"
             exit 1
           fi
 
+          echo "index.html ditemukan."
+
+
+      # 8. Tambahkan Android
       - name: Add Android
         run: npx cap add android
 
-      - name: Copy web files
+
+      # 9. Copy aplikasi HTML ke Android
+      - name: Copy Web App
         run: npx cap copy android
 
-      - name: Build APK
+
+      # 10. Sinkronisasi Capacitor
+      - name: Sync Android
+        run: npx cap sync android
+
+
+      # 11. Berikan permission Gradle
+      - name: Grant Gradle permission
+        run: chmod +x android/gradlew
+
+
+      # 12. Build APK
+      - name: Build Debug APK
         working-directory: android
         run: ./gradlew assembleDebug
 
+
+      # 13. Upload APK
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
