@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Kalkulator Perpanjang Gadai</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background: #fff7f1;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 550px;
+    margin: auto;
+}
+
+/* HEADER */
+
+.header {
+    background: linear-gradient(135deg, #FFA259, #ffbd8a);
+    color: white;
+    padding: 24px;
+    border-radius: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 5px 15px rgba(255,162,89,0.25);
+}
+
+.header h1 {
+    margin: 0 0 7px;
+    font-size: 25px;
+}
+
+.header p {
+    margin: 0;
+    opacity: 0.95;
+}
+
+/* CARD */
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* FIELD */
+
+.field {
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #fff;
+    outline: none;
+    transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #FFA259;
+    box-shadow: 0 0 0 3px rgba(255,162,89,0.15);
+}
+
+/* BUTTON */
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* HITUNG */
+
+.btn-hitung {
+    background: #FFA259;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255,162,89,0.3);
+}
+
+.btn-hitung:hover {
+    background: #f28f48;
+}
+
+/* RESET */
+
+.btn-reset {
+    background: #f1f1f1;
+    color: #444;
+    margin-top: 9px;
+}
+
+/* HASIL */
+
+.hasil {
+    margin-top: 20px;
+    padding: 17px;
+    background: linear-gradient(135deg, #FFA259, #FFD0AD);
+    border: 1px solid #FFA259;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(255,162,89,0.15);
+}
+
+/* BARIS HASIL */
+
+.baris {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.45);
+}
+
+.baris:last-child {
+    border-bottom: none;
+}
+
+/* TOTAL */
+
+.total {
+    margin-top: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #8a421c;
+}
+
+/* INFO */
+
+.info {
+    margin-top: 14px;
+    padding: 12px;
+    background: #fff3ea;
+    border: 1px solid #ffbd8a;
+    border-radius: 9px;
+    font-size: 14px;
+    color: #63391f;
+}
+
+/* SALIN */
+
+.btn-salin {
+    background: #FFA259;
+    color: white;
+    margin-top: 14px;
+    box-shadow: 0 4px 10px rgba(255,162,89,0.3);
+}
+
+.btn-salin:hover {
+    background: #f28f48;
+}
+
+/* FOOTER */
+
+.footer {
+    text-align: center;
+    margin-top: 22px;
+    padding: 14px 10px;
+    color: #9a6a4a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* HIDDEN */
+
+.hidden {
+    display: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .header {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            Kalkulator Perpanjang Gadai
+        </h1>
+
+        <p>
+            Perhitungan bunga & denda keterlambatan
+        </p>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="card">
+
+
+        <!-- NILAI GADAI -->
+
+        <div class="field">
+
+            <label>
+                Nilai Gadai
+            </label>
+
+            <input
+                type="number"
+                id="nilaiGadai"
+                min="0"
+                placeholder="Contoh: 1000000"
+            >
+
+        </div>
+
+
+        <!-- JATUH TEMPO AWAL -->
+
+        <div class="field">
+
+            <label>
+                Tanggal Jatuh Tempo Awal
+            </label>
+
+            <input
+                type="date"
+                id="tanggalJatuhTempo"
+            >
+
+        </div>
+
+
+        <!-- TANGGAL PROSES -->
+
+        <div class="field">
+
+            <label>
+                Tanggal Proses Perpanjang
+            </label>
+
+            <input
+                type="date"
+                id="tanggalProses"
+            >
+
+        </div>
+
+
+        <!-- BUNGA -->
+
+        <div class="field">
+
+            <label>
+                Pilih Bunga
+            </label>
+
+            <select id="bunga">
+
+                <option value="5">
+                    5% / 15 Hari
+                </option>
+
+                <option value="10">
+                    10% / 30 Hari
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- SISA DENDA -->
+
+        <div class="field">
+
+            <label>
+                Sisa Denda
+            </label>
+
+            <input
+                type="number"
+                id="sisaDenda"
+                min="0"
+                placeholder="Isi jika ada sisa denda"
+            >
+
+        </div>
+
+
+        <!-- HITUNG -->
+
+        <button
+            class="btn-hitung"
+            onclick="hitungPerpanjang()"
+        >
+
+            HITUNG PERPANJANG
+
+        </button>
+
+
+        <!-- RESET -->
+
+        <button
+            class="btn-reset"
+            onclick="resetForm()"
+        >
+
+            RESET
+
+        </button>
+
+
+        <!-- HASIL -->
+
+        <div
+            id="hasil"
+            class="hidden"
+        ></div>
+
+
+    </div>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        Helisati Putra Hulu, S.Kom&copy;
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+
+/*
+==================================================
+VARIABEL TEKS SALINAN
+==================================================
+*/
+
+let teksRincian = "";
+
+
+
+/*
+==================================================
+FORMAT RUPIAH
+==================================================
+*/
+
+function formatRupiah(angka) {
+
+    return new Intl.NumberFormat(
+        "id-ID",
+        {
+            style: "currency",
+            currency: "IDR",
+            maximumFractionDigits: 0
+        }
+    ).format(angka);
+
+}
+
+
+
+/*
+==================================================
+FORMAT TANGGAL
+==================================================
+*/
+
+function formatTanggal(tanggal) {
+
+    return new Date(
+        tanggal + "T00:00:00"
+    ).toLocaleDateString(
+        "id-ID",
+        {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+
+/*
+==================================================
+TAMBAH HARI
+==================================================
+*/
+
+function tambahHari(
+    tanggal,
+    jumlahHari
+) {
+
+    const date =
+        new Date(
+            tanggal + "T00:00:00"
+        );
+
+    date.setDate(
+        date.getDate() + jumlahHari
+    );
+
+    const tahun =
+        date.getFullYear();
+
+    const bulan =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const hari =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return (
+        tahun +
+        "-" +
+        bulan +
+        "-" +
+        hari
+    );
+
+}
+
+
+
+/*
+==================================================
+HITUNG SELISIH HARI
+==================================================
+*/
+
+function hitungSelisihHari(
+    tanggalAwal,
+    tanggalAkhir
+) {
+
+    const awal =
+        new Date(
+            tanggalAwal + "T00:00:00"
+        );
+
+    const akhir =
+        new Date(
+            tanggalAkhir + "T00:00:00"
+        );
+
+    const selisih =
+        akhir.getTime() -
+        awal.getTime();
+
+    return Math.floor(
+        selisih /
+        (1000 * 60 * 60 * 24)
+    );
+
+}
+
+
+
+/*
+==================================================
+HITUNG PERPANJANG
+==================================================
+*/
+
+function hitungPerpanjang() {
+
+
+    const nilaiGadai =
+        Number(
+            document.getElementById(
+                "nilaiGadai"
+            ).value
+        );
+
+
+    const tanggalJatuhTempo =
+        document.getElementById(
+            "tanggalJatuhTempo"
+        ).value;
+
+
+    const tanggalProses =
+        document.getElementById(
+            "tanggalProses"
+        ).value;
+
+
+    const persen =
+        Number(
+            document.getElementById(
+                "bunga"
+            ).value
+        );
+
+
+    const sisaDenda =
+        Number(
+            document.getElementById(
+                "sisaDenda"
+            ).value
+        ) || 0;
+
+
+
+    /*
+    ==========================================
+    VALIDASI
+    ==========================================
+    */
+
+    if (
+
+        !nilaiGadai ||
+
+        !tanggalJatuhTempo ||
+
+        !tanggalProses
+
+    ) {
+
+        alert(
+            "Mohon lengkapi semua data."
+        );
+
+        return;
+
+    }
+
+
+
+    /*
+    ==========================================
+    PERIODE BUNGA
+    ==========================================
+    */
+
+    let periode;
+
+
+    if (persen === 5) {
+
+        periode = 15;
+
+    } else {
+
+        periode = 30;
+
+    }
+
+
+
+    /*
+    ==========================================
+    HITUNG BUNGA
+    ==========================================
+    */
+
+    const bunga =
+
+        nilaiGadai *
+
+        persen /
+
+        100;
+
+
+
+    /*
+    ==========================================
+    HITUNG KETERLAMBATAN
+    ==========================================
+    */
+
+    let keterlambatan =
+
+        hitungSelisihHari(
+
+            tanggalJatuhTempo,
+
+            tanggalProses
+
+        );
+
+
+    if (
+
+        keterlambatan < 0
+
+    ) {
+
+        keterlambatan = 0;
+
+    }
+
+
+
+    /*
+    ==========================================
+    DENDA BARU
+    ==========================================
+    
+    Rp10.000 per hari
+    */
+
+    const denda =
+
+        keterlambatan *
+
+        10000;
+
+
+
+    /*
+    ==========================================
+    TOTAL BAYAR
+    ==========================================
+    
+    Bunga
+    +
+    Denda baru
+    +
+    Sisa denda
+    */
+
+    const totalBayar =
+
+        bunga +
+
+        denda +
+
+        sisaDenda;
+
+
+
+    /*
+    ==========================================
+    JATUH TEMPO AKHIR
+    ==========================================
+    
+    Dihitung dari jatuh tempo awal.
+    */
+
+    const tanggalJatuhTempoAkhir =
+
+        tambahHari(
+
+            tanggalJatuhTempo,
+
+            periode
+
+        );
+
+
+
+    /*
+    ==========================================
+    KETERANGAN
+    ==========================================
+    */
+
+    let keterangan;
+
+
+    if (
+
+        keterlambatan === 0
+
+    ) {
+
+        keterangan =
+
+            "Perpanjangan sebelum atau tepat pada jatuh tempo. Yang dibayar hanya bunga.";
+
+    }
+
+    else {
+
+        keterangan =
+
+            "Perpanjangan setelah jatuh tempo. Bunga ditambah denda Rp10.000 per hari.";
+
+    }
+
+
+
+    /*
+    ==========================================
+    TEKS WHATSAPP
+    ==========================================
+    */
+
+    let teksDenda;
+
+
+    if (
+
+        keterlambatan > 0
+
+    ) {
+
+        teksDenda =
+
+            `Denda : ${formatRupiah(denda)} (${keterlambatan} hari)`;
+
+    }
+
+    else {
+
+        teksDenda =
+
+            `Denda : ${formatRupiah(denda)}`;
+
+    }
+
+
+
+    /*
+    SISA DENDA HANYA DITAMPILKAN
+    JIKA LEBIH DARI 0
+    */
+
+    let teksSisaDenda = "";
+
+
+    if (
+
+        sisaDenda > 0
+
+    ) {
+
+        teksSisaDenda =
+
+            `\nSisa Denda : ${formatRupiah(sisaDenda)}`;
+
+    }
+
+
+
+    /*
+    ==========================================
+    TEKS SALINAN
+    ==========================================
+    */
+
+    teksRincian =
+
+`*PT. GADAI OGAN BARU*
+*OUTLET 07 MARELAN*
+
+BANK BNI
+No. Rek : 1978693109
+A/N GADAI OGAN BARU
+
+Bunga : ${formatRupiah(bunga)}
+${teksDenda}${teksSisaDenda}
+*Total  : ${formatRupiah(totalBayar)}*
+
+Kalau sudah di transfer jangan lupa dikirim bukti pembayarannya dan nama akun pengirimnya yah Pak/Bu
+terimakasih 🙏😇`;
+
+
+
+    /*
+    ==========================================
+    TAMPILKAN HASIL
+    ==========================================
+    */
+
+    const hasil =
+
+        document.getElementById(
+
+            "hasil"
+
+        );
+
+
+    hasil.className =
+
+        "hasil";
+
+
+    hasil.innerHTML = `
+
+
+        <div class="baris">
+
+            <span>
+                Nilai Gadai
+            </span>
+
+            <strong>
+                ${formatRupiah(nilaiGadai)}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Jatuh Tempo Awal
+            </span>
+
+            <strong>
+                ${formatTanggal(
+                    tanggalJatuhTempo
+                )}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Tanggal Proses
+            </span>
+
+            <strong>
+                ${formatTanggal(
+                    tanggalProses
+                )}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Bunga
+            </span>
+
+            <strong>
+                ${persen}%
+                /
+                ${periode} Hari
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Jatuh Tempo Akhir
+            </span>
+
+            <strong>
+                ${formatTanggal(
+                    tanggalJatuhTempoAkhir
+                )}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Bunga
+            </span>
+
+            <strong>
+                ${formatRupiah(bunga)}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Keterlambatan
+            </span>
+
+            <strong>
+                ${keterlambatan}
+                Hari
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Denda
+            </span>
+
+            <strong>
+                ${formatRupiah(denda)}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris">
+
+            <span>
+                Sisa Denda
+            </span>
+
+            <strong>
+                ${formatRupiah(sisaDenda)}
+            </strong>
+
+        </div>
+
+
+
+        <div class="baris total">
+
+            <span>
+                TOTAL BAYAR
+            </span>
+
+            <strong>
+                ${formatRupiah(totalBayar)}
+            </strong>
+
+        </div>
+
+
+
+        <div class="info">
+
+            ${keterangan}
+
+        </div>
+
+
+
+        <button
+            class="btn-salin"
+            onclick="salinRincian()"
+        >
+
+            📋 SALIN RINCIAN PEMBAYARAN
+
+        </button>
+
+    `;
+
+}
+
+
+
+/*
+==================================================
+SALIN RINCIAN
+==================================================
+*/
+
+function salinRincian() {
+
+
+    navigator.clipboard.writeText(
+
+        teksRincian
+
+    )
+
+    .then(function() {
+
+        alert(
+
+            "Rincian berhasil disalin. Silakan paste ke WhatsApp."
+
+        );
+
+    })
+
+    .catch(function() {
+
+
+        const textarea =
+
+            document.createElement(
+
+                "textarea"
+
+            );
+
+
+        textarea.value =
+
+            teksRincian;
+
+
+        document.body.appendChild(
+
+            textarea
+
+        );
+
+
+        textarea.select();
+
+
+        document.execCommand(
+
+            "copy"
+
+        );
+
+
+        document.body.removeChild(
+
+            textarea
+
+        );
+
+
+        alert(
+
+            "Rincian berhasil disalin."
+
+        );
+
+    });
+
+}
+
+
+
+/*
+==================================================
+RESET
+==================================================
+*/
+
+function resetForm() {
+
+
+    document.getElementById(
+
+        "nilaiGadai"
+
+    ).value = "";
+
+
+    document.getElementById(
+
+        "tanggalJatuhTempo"
+
+    ).value = "";
+
+
+    document.getElementById(
+
+        "tanggalProses"
+
+    ).value = "";
+
+
+    document.getElementById(
+
+        "bunga"
+
+    ).value = "5";
+
+
+    document.getElementById(
+
+        "sisaDenda"
+
+    ).value = "";
+
+
+    document.getElementById(
+
+        "hasil"
+
+    ).className = "hidden";
+
+
+    document.getElementById(
+
+        "hasil"
+
+    ).innerHTML = "";
+
+
+    teksRincian = "";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
