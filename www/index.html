@@ -194,12 +194,6 @@ button:active {
     color: #765900;
 }
 
-.status-danger {
-    background: #ffeaea;
-    border: 1px solid #e58b8b;
-    color: #8b2020;
-}
-
 /* SALIN */
 
 .btn-salin {
@@ -267,11 +261,9 @@ button:active {
 
 </head>
 
-
 <body>
 
 <div class="container">
-
 
     <!-- HEADER -->
 
@@ -327,12 +319,12 @@ button:active {
         </div>
 
 
-        <!-- TANGGAL PROSES -->
+        <!-- TANGGAL PERPANJANG -->
 
         <div class="field">
 
             <label>
-                Tanggal Proses Perpanjang
+                Tanggal Perpanjang
             </label>
 
             <input
@@ -390,9 +382,7 @@ button:active {
             class="btn-hitung"
             onclick="hitungPerpanjang()"
         >
-
             HITUNG PERPANJANG
-
         </button>
 
 
@@ -402,9 +392,7 @@ button:active {
             class="btn-reset"
             onclick="resetForm()"
         >
-
             RESET
-
         </button>
 
 
@@ -414,7 +402,6 @@ button:active {
             id="hasil"
             class="hidden"
         ></div>
-
 
     </div>
 
@@ -437,13 +424,10 @@ button:active {
 
     </footer>
 
-
 </div>
 
 
-
 <script>
-
 
 /*
 ==================================================
@@ -452,7 +436,6 @@ VARIABEL TEKS SALINAN
 */
 
 let teksRincian = "";
-
 
 
 /*
@@ -473,7 +456,6 @@ function formatRupiah(angka) {
     ).format(angka);
 
 }
-
 
 
 /*
@@ -499,7 +481,6 @@ function formatTanggal(tanggal) {
     );
 
 }
-
 
 
 /*
@@ -546,7 +527,6 @@ function tambahHari(
 }
 
 
-
 /*
 ==================================================
 HITUNG SELISIH HARI
@@ -579,10 +559,21 @@ function hitungSelisihHari(
 }
 
 
-
 /*
 ==================================================
 HITUNG JUMLAH BUNGA
+==================================================
+
+ATURAN:
+
+Sebelum H-3 jatuh tempo akhir
+= 1x bunga
+
+Mulai H-3 sampai jatuh tempo akhir
+= 2x bunga
+
+Setelah itu setiap kelipatan periode
+= tambah 1x bunga
 ==================================================
 */
 
@@ -592,33 +583,17 @@ function hitungJumlahBunga(
     periode
 ) {
 
-
-    /*
-    Jatuh tempo akhir
-    */
-
     const jatuhTempoAkhir =
         tambahHari(
             tanggalJatuhTempoAwal,
             periode
         );
 
-
-    /*
-    Mulai 2x bunga adalah
-    H-3 dari jatuh tempo akhir
-    */
-
     const mulai2x =
         tambahHari(
             jatuhTempoAkhir,
             -3
         );
-
-
-    /*
-    Jika belum H-3
-    */
 
     if (
         tanggalProses < mulai2x
@@ -628,27 +603,11 @@ function hitungJumlahBunga(
 
     }
 
-
-    /*
-    Setelah masuk H-3,
-    hitung kenaikan setiap periode.
-    */
-
     const selisih =
         hitungSelisihHari(
             jatuhTempoAkhir,
             tanggalProses
         );
-
-
-    /*
-    H-3 sampai jatuh tempo akhir
-    = 2x
-
-    Setelah lewat jatuh tempo akhir,
-    setiap periode berikutnya akan
-    menambah 1x bunga.
-    */
 
     if (
         selisih < 0
@@ -657,7 +616,6 @@ function hitungJumlahBunga(
         return 2;
 
     }
-
 
     return (
         Math.floor(
@@ -668,7 +626,6 @@ function hitungJumlahBunga(
 }
 
 
-
 /*
 ==================================================
 HITUNG PERPANJANG
@@ -677,7 +634,6 @@ HITUNG PERPANJANG
 
 function hitungPerpanjang() {
 
-
     const nilaiGadai =
         Number(
             document.getElementById(
@@ -685,18 +641,15 @@ function hitungPerpanjang() {
             ).value
         );
 
-
     const tanggalJatuhTempo =
         document.getElementById(
             "tanggalJatuhTempo"
         ).value;
 
-
     const tanggalProses =
         document.getElementById(
             "tanggalProses"
         ).value;
-
 
     const persen =
         Number(
@@ -704,7 +657,6 @@ function hitungPerpanjang() {
                 "bunga"
             ).value
         );
-
 
     const sisaDenda =
         Number(
@@ -714,11 +666,8 @@ function hitungPerpanjang() {
         ) || 0;
 
 
-
     /*
-    ==========================================
     VALIDASI
-    ==========================================
     */
 
     if (
@@ -736,11 +685,8 @@ function hitungPerpanjang() {
     }
 
 
-
     /*
-    ==========================================
     PERIODE
-    ==========================================
     */
 
     const periode =
@@ -749,11 +695,8 @@ function hitungPerpanjang() {
             : 30;
 
 
-
     /*
-    ==========================================
     BUNGA SATU KALI
-    ==========================================
     */
 
     const bungaSatu =
@@ -762,11 +705,8 @@ function hitungPerpanjang() {
         100;
 
 
-
     /*
-    ==========================================
-    JATUH TEMPO AKHIR
-    ==========================================
+    JATUH TEMPO AKHIR PERIODE PERTAMA
     */
 
     const tanggalJatuhTempoAkhir =
@@ -776,11 +716,8 @@ function hitungPerpanjang() {
         );
 
 
-
     /*
-    ==========================================
     JUMLAH BUNGA
-    ==========================================
     */
 
     const jumlahPerpanjangan =
@@ -791,11 +728,8 @@ function hitungPerpanjang() {
         );
 
 
-
     /*
-    ==========================================
     TOTAL BUNGA
-    ==========================================
     */
 
     const totalBunga =
@@ -803,11 +737,8 @@ function hitungPerpanjang() {
         jumlahPerpanjangan;
 
 
-
     /*
-    ==========================================
-    HITUNG KETERLAMBATAN
-    ==========================================
+    KETERLAMBATAN
     */
 
     let keterlambatan =
@@ -815,7 +746,6 @@ function hitungPerpanjang() {
             tanggalJatuhTempo,
             tanggalProses
         );
-
 
     if (
         keterlambatan < 0
@@ -826,14 +756,8 @@ function hitungPerpanjang() {
     }
 
 
-
     /*
-    ==========================================
     DENDA
-    ==========================================
-
-    Rp10.000 per hari setelah
-    jatuh tempo awal.
     */
 
     const denda =
@@ -841,11 +765,8 @@ function hitungPerpanjang() {
         10000;
 
 
-
     /*
-    ==========================================
     TOTAL BAYAR
-    ==========================================
     */
 
     const totalBayar =
@@ -854,11 +775,8 @@ function hitungPerpanjang() {
         sisaDenda;
 
 
-
     /*
-    ==========================================
-    JATUH TEMPO AKHIR BARU
-    ==========================================
+    JATUH TEMPO BARU
     */
 
     const tanggalJatuhTempoBaru =
@@ -869,11 +787,8 @@ function hitungPerpanjang() {
         );
 
 
-
     /*
-    ==========================================
     STATUS
-    ==========================================
     */
 
     const mulai2x =
@@ -882,11 +797,8 @@ function hitungPerpanjang() {
             -3
         );
 
-
     let statusHTML = "";
-
     let statusClass = "";
-
 
 
     if (
@@ -894,29 +806,16 @@ function hitungPerpanjang() {
         mulai2x
     ) {
 
-        const hari =
-            hitungSelisihHari(
-                tanggalProses,
-                mulai2x
-            );
-
-
         statusClass =
             "status-aman";
 
-
         statusHTML =
-
             "🟢 <strong>AMAN</strong><br>" +
-
             "Saat ini masih " +
-
             "<strong>1x bunga " +
             persen +
             "%</strong>.<br>" +
-
             "Mulai dihitung 2x bunga " +
-
             "<strong>" +
             formatTanggal(
                 mulai2x
@@ -930,13 +829,11 @@ function hitungPerpanjang() {
         statusClass =
             "status-warning";
 
-
         const periodeBerikutnya =
             tambahHari(
                 tanggalJatuhTempoAkhir,
                 periode
             );
-
 
         const mulaiBerikutnya =
             tambahHari(
@@ -944,29 +841,21 @@ function hitungPerpanjang() {
                 -3
             );
 
-
         statusHTML =
-
             "⚠️ <strong>PERHATIAN</strong><br>" +
-
             "Saat ini dihitung " +
-
             "<strong>" +
             jumlahPerpanjangan +
             "x bunga " +
             persen +
             "%</strong>.<br>" +
-
             "Jatuh tempo periode ini: " +
-
             "<strong>" +
             formatTanggal(
                 tanggalJatuhTempoAkhir
             ) +
             "</strong>.<br>" +
-
             "Perpanjangan berikutnya mulai " +
-
             "<strong>" +
             formatTanggal(
                 mulaiBerikutnya
@@ -976,22 +865,17 @@ function hitungPerpanjang() {
     }
 
 
-
     /*
-    ==========================================
-    TEKS DENDA UNTUK WHATSAPP
-    ==========================================
+    TEKS DENDA WHATSAPP
     */
 
     let teksDenda;
-
 
     if (
         keterlambatan > 0
     ) {
 
         teksDenda =
-
             `Denda : ${formatRupiah(denda)} (${keterlambatan} hari lewat)`;
 
     }
@@ -999,51 +883,29 @@ function hitungPerpanjang() {
     else {
 
         teksDenda =
-
             `Denda : ${formatRupiah(denda)}`;
 
     }
 
 
-
     /*
-    ==========================================
     SISA DENDA
-    ==========================================
     */
 
     let teksSisaDenda = "";
-
 
     if (
         sisaDenda > 0
     ) {
 
         teksSisaDenda =
-
             `\nSisa Denda : ${formatRupiah(sisaDenda)}`;
 
     }
 
 
-
     /*
-    ==========================================
     TEKS WHATSAPP
-    ==========================================
-
-    SEKARANG BAGIAN BUNGA OTOMATIS:
-
-    1x bunga 5%
-    2x bunga 5%
-    3x bunga 5%
-
-    atau
-
-    1x bunga 10%
-    2x bunga 10%
-    3x bunga 10%
-    ==========================================
     */
 
     teksRincian =
@@ -1063,11 +925,8 @@ Kalau sudah di transfer jangan lupa dikirim bukti pembayarannya dan nama akun pe
 terimakasih 🙏😇`;
 
 
-
     /*
-    ==========================================
     TAMPILKAN HASIL
-    ==========================================
     */
 
     const hasil =
@@ -1075,203 +934,123 @@ terimakasih 🙏😇`;
             "hasil"
         );
 
-
     hasil.className =
         "hasil";
-
 
     hasil.innerHTML = `
 
         <div class="baris">
-
-            <span>
-                Nilai Gadai
-            </span>
-
+            <span>Nilai Gadai</span>
             <strong>
-                ${formatRupiah(
-                    nilaiGadai
-                )}
+                ${formatRupiah(nilaiGadai)}
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Jatuh Tempo Awal
-            </span>
-
+            <span>Jatuh Tempo Awal</span>
             <strong>
                 ${formatTanggal(
                     tanggalJatuhTempo
                 )}
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Tanggal Proses
-            </span>
-
+            <span>Tanggal Perpanjang</span>
             <strong>
                 ${formatTanggal(
                     tanggalProses
                 )}
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Pilihan Bunga
-            </span>
-
+            <span>Pilihan Bunga</span>
             <strong>
                 ${persen}% / ${periode} Hari
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Jumlah Bunga
-            </span>
-
+            <span>Jumlah Bunga</span>
             <strong>
                 ${jumlahPerpanjangan}x
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Jatuh Tempo Akhir
-            </span>
-
+            <span>Jatuh Tempo Akhir</span>
             <strong>
                 ${formatTanggal(
                     tanggalJatuhTempoBaru
                 )}
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Total Bunga
-            </span>
-
+            <span>Total Bunga</span>
             <strong>
                 ${formatRupiah(
                     totalBunga
                 )}
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Keterlambatan
-            </span>
-
+            <span>Keterlambatan</span>
             <strong>
-                ${keterlambatan}
-                Hari
+                ${keterlambatan} Hari
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Denda
-            </span>
-
+            <span>Denda</span>
             <strong>
                 ${formatRupiah(
                     denda
                 )}
             </strong>
-
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Sisa Denda
-            </span>
-
+            <span>Sisa Denda</span>
             <strong>
                 ${formatRupiah(
                     sisaDenda
                 )}
             </strong>
-
         </div>
 
-
         <div class="baris total">
-
-            <span>
-                TOTAL BAYAR
-            </span>
-
+            <span>TOTAL BAYAR</span>
             <strong>
                 ${formatRupiah(
                     totalBayar
                 )}
             </strong>
-
         </div>
-
 
         <div class="status ${statusClass}">
-
             ${statusHTML}
-
         </div>
 
-
         <div class="info">
-
             ${keterangan(
                 tanggalProses,
                 tanggalJatuhTempo
             )}
-
         </div>
-
 
         <button
             class="btn-salin"
             onclick="salinRincian()"
         >
-
             📋 SALIN RINCIAN PEMBAYARAN
-
         </button>
 
     `;
 
 }
-
 
 
 /*
@@ -1291,23 +1070,20 @@ function keterangan(
             tanggalProses
         );
 
-
     if (
         selisih <= 0
     ) {
 
-        return "Tanggal proses belum melewati jatuh tempo awal. Tidak ada denda baru.";
+        return "Tanggal perpanjang belum melewati jatuh tempo awal. Tidak ada denda baru.";
 
     }
 
-
     return (
-        "Tanggal proses sudah melewati jatuh tempo awal. " +
+        "Tanggal perpanjang sudah melewati jatuh tempo awal. " +
         "Denda dihitung Rp10.000 per hari."
     );
 
 }
-
 
 
 /*
@@ -1330,7 +1106,6 @@ function salinRincian() {
 
     }
 
-
     navigator.clipboard.writeText(
         teksRincian
     )
@@ -1350,28 +1125,22 @@ function salinRincian() {
                 "textarea"
             );
 
-
         textarea.value =
             teksRincian;
-
 
         document.body.appendChild(
             textarea
         );
 
-
         textarea.select();
-
 
         document.execCommand(
             "copy"
         );
 
-
         document.body.removeChild(
             textarea
         );
-
 
         alert(
             "Rincian berhasil disalin."
@@ -1380,7 +1149,6 @@ function salinRincian() {
     });
 
 }
-
 
 
 /*
@@ -1395,41 +1163,78 @@ function resetForm() {
         "nilaiGadai"
     ).value = "";
 
-
     document.getElementById(
         "tanggalJatuhTempo"
     ).value = "";
 
+    /*
+    Setelah reset, tanggal perpanjang
+    kembali ke tanggal hari ini.
+    */
 
-    document.getElementById(
-        "tanggalProses"
-    ).value = "";
-
+    setTanggalHariIni();
 
     document.getElementById(
         "bunga"
     ).value = "5";
 
-
     document.getElementById(
         "sisaDenda"
     ).value = "";
-
 
     document.getElementById(
         "hasil"
     ).className =
         "hidden";
 
-
     document.getElementById(
         "hasil"
     ).innerHTML = "";
 
-
     teksRincian = "";
 
 }
+
+
+/*
+==================================================
+SET TANGGAL HARI INI
+==================================================
+*/
+
+function setTanggalHariIni() {
+
+    const sekarang =
+        new Date();
+
+    const tahun =
+        sekarang.getFullYear();
+
+    const bulan =
+        String(
+            sekarang.getMonth() + 1
+        ).padStart(2, "0");
+
+    const hari =
+        String(
+            sekarang.getDate()
+        ).padStart(2, "0");
+
+    document.getElementById(
+        "tanggalProses"
+    ).value =
+        `${tahun}-${bulan}-${hari}`;
+
+}
+
+
+/*
+==================================================
+JALANKAN SAAT APLIKASI DIBUKA
+==================================================
+*/
+
+setTanggalHariIni();
 
 </script>
 
