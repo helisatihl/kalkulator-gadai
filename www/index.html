@@ -515,7 +515,7 @@ button {
     </div>
 
 
-    <!-- SISA DENDA TEBUS -->
+    <!-- SISA DENDA -->
 
     <div class="field">
 
@@ -821,57 +821,6 @@ function hitungPerpanjang() {
         );
 
 
-    const mulaiPeringatan =
-        tambahHari(
-            tempoAkhir,
-            -3
-        );
-
-
-    let jumlahBunga;
-
-
-    if (
-        proses < mulaiPeringatan
-    ) {
-
-        jumlahBunga = 1;
-
-    }
-
-    else {
-
-        const lewat =
-            selisihHari(
-                tempoAkhir,
-                proses
-            );
-
-        if (
-            lewat < 0
-        ) {
-
-            jumlahBunga = 2;
-
-        }
-
-        else {
-
-            jumlahBunga =
-                Math.floor(
-                    lewat / periode
-                ) + 2;
-
-        }
-
-    }
-
-
-    const totalBunga =
-        bungaSatu *
-        jumlahBunga;
-
-
     let keterlambatan =
         selisihHari(
             tempo,
@@ -891,6 +840,50 @@ function hitungPerpanjang() {
     const denda =
         keterlambatan *
         10000;
+
+
+    /*
+       Perpanjang:
+       Jika proses 3 hari sebelum tempo akhir,
+       tetap dianggap perpanjang untuk periode tersebut.
+    */
+
+    let jumlahBunga = 1;
+
+    const hariDariTempoAkhir =
+        selisihHari(
+            tempoAkhir,
+            proses
+        );
+
+
+    if (
+        hariDariTempoAkhir >= -3
+    ) {
+
+        jumlahBunga = 1;
+
+    }
+
+
+    if (
+        hariDariTempoAkhir > 0
+    ) {
+
+        jumlahBunga =
+            2 +
+            Math.floor(
+                (
+                    hariDariTempoAkhir - 1
+                ) / periode
+            );
+
+    }
+
+
+    const totalBunga =
+        bungaSatu *
+        jumlahBunga;
 
 
     const total =
@@ -1067,7 +1060,7 @@ function hitungTebus() {
 
 
     /* ==============================================
-       DENDA BARU
+       DENDA
     ============================================== */
 
     const denda =
@@ -1090,6 +1083,8 @@ function hitungTebus() {
        16 - 30  = 2x
        31 - 41  = 3x
        42 - 46  = 4x
+
+       Setelah itu pola berulang:
        47 - 61  = 5x
        62 - 76  = 6x
        dst.
@@ -1144,7 +1139,9 @@ function hitungTebus() {
             jumlahBunga =
                 5 +
                 Math.floor(
-                    (hariLewat - 47) / 15
+                    (
+                        hariLewat - 47
+                    ) / 15
                 );
 
         }
@@ -1178,7 +1175,9 @@ function hitungTebus() {
             jumlahBunga =
                 1 +
                 Math.floor(
-                    (hariLewat - 16) / 15
+                    (
+                        hariLewat - 16
+                    ) / 15
                 );
 
         }
@@ -1202,11 +1201,11 @@ function hitungTebus() {
 
 
     /* ==============================================
-       TOTAL TEBUS
+       TOTAL
 
        Pokok
        + Bunga
-       + Denda Baru
+       + Denda
        + Sisa Denda
     ============================================== */
 
@@ -1256,20 +1255,20 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
     ) {
 
         keterangan =
-            "Ditebus sebelum atau tepat tanggal jatuh tempo.";
+            "Ditebus sebelum atau tepat pada tanggal jatuh tempo.";
 
     }
 
     else {
 
         keterangan =
-            `Terlambat ${hariLewat} hari. Dikenakan ${jumlahBunga}x bunga ${persen}% dan denda Rp10.000/hari.`;
+            `Lewat ${hariLewat} hari dari tanggal jatuh tempo.`;
 
     }
 
 
     /* ==============================================
-       TAMPILKAN HASIL
+       HASIL
     ============================================== */
 
     const hasil =
@@ -1325,11 +1324,11 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
         <div class="baris">
 
             <span>
-                Hari Lewat
+                Keterangan
             </span>
 
             <strong>
-                ${hariLewat} Hari
+                ${keterangan}
             </strong>
 
         </div>
@@ -1343,7 +1342,7 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
 
             <strong>
                 ${rupiah(bungaKeterlambatan)}
-                (${jumlahBunga}x bunga)
+                (${jumlahBunga}x bunga ${persen}%)
             </strong>
 
         </div>
@@ -1384,17 +1383,6 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
             <strong>
                 ${rupiah(total)}
             </strong>
-
-        </div>
-
-
-        <div class="status ${
-            hariLewat === 0
-                ? "status-aman"
-                : "status-warning"
-        }">
-
-            ${keterangan}
 
         </div>
 
