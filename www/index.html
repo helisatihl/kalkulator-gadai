@@ -26,7 +26,7 @@ body {
     margin: auto;
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
 
 .header {
     background: linear-gradient(135deg, #FFA259, #ffbd8a);
@@ -47,7 +47,7 @@ body {
     opacity: 0.95;
 }
 
-/* NAVIGASI */
+/* ================= NAVIGASI ================= */
 
 .nav {
     display: flex;
@@ -57,27 +57,27 @@ body {
 
 .nav button {
     flex: 1;
-    background: white;
-    color: #555;
-    border: 1px solid #ddd;
     padding: 13px 8px;
     border-radius: 10px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #555;
     font-size: 14px;
 }
 
-.nav button.active-perpanjang {
+.nav .active-perpanjang {
     background: #FFA259;
     color: white;
     border-color: #FFA259;
 }
 
-.nav button.active-tebus {
+.nav .active-tebus {
     background: #092328;
     color: white;
     border-color: #092328;
 }
 
-/* CARD */
+/* ================= CARD ================= */
 
 .card {
     background: white;
@@ -90,7 +90,7 @@ body {
     margin-top: 0;
 }
 
-/* FIELD */
+/* ================= FIELD ================= */
 
 .field {
     margin-bottom: 17px;
@@ -109,7 +109,7 @@ select {
     border: 1px solid #ddd;
     border-radius: 10px;
     font-size: 16px;
-    background: #fff;
+    background: white;
     outline: none;
 }
 
@@ -119,7 +119,7 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(255,162,89,0.15);
 }
 
-/* BUTTON */
+/* ================= BUTTON ================= */
 
 button {
     cursor: pointer;
@@ -147,7 +147,7 @@ button {
     margin-top: 9px;
 }
 
-/* TEBUS */
+/* ================= TEBUS BUTTON ================= */
 
 .btn-hitung-tebus {
     width: 100%;
@@ -159,11 +159,7 @@ button {
     color: white;
 }
 
-.btn-hitung-tebus:hover {
-    background: #12363c;
-}
-
-/* HASIL */
+/* ================= HASIL ================= */
 
 .hasil {
     margin-top: 20px;
@@ -175,7 +171,7 @@ button {
 
 .hasil-tebus {
     background: #092328;
-    border: 1px solid #092328;
+    border-color: #092328;
     color: white;
 }
 
@@ -188,17 +184,17 @@ button {
     border-bottom: 1px solid rgba(255,255,255,0.45);
 }
 
+.baris:last-child {
+    border-bottom: none;
+}
+
 .total {
     margin-top: 5px;
     font-size: 20px;
     font-weight: bold;
 }
 
-.hasil-tebus .total {
-    color: white;
-}
-
-/* STATUS */
+/* ================= KETERANGAN ================= */
 
 .status {
     margin-top: 14px;
@@ -219,7 +215,13 @@ button {
     color: #765900;
 }
 
-/* SALIN */
+.status-danger {
+    background: #ffe9e9;
+    border: 1px solid #ef9999;
+    color: #8b2020;
+}
+
+/* ================= SALIN ================= */
 
 .btn-salin {
     width: 100%;
@@ -237,12 +239,12 @@ button {
     border: 1px solid rgba(255,255,255,0.4);
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
 
 .footer {
     text-align: center;
     margin-top: 22px;
-    padding: 14px;
+    padding: 14px 10px;
     color: #9a6a4a;
     font-size: 13px;
     font-weight: 600;
@@ -255,15 +257,15 @@ button {
     font-weight: 500;
 }
 
-/* HIDDEN */
+/* ================= HIDDEN ================= */
 
 .hidden {
     display: none;
 }
 
-/* RESPONSIVE */
+/* ================= MOBILE ================= */
 
-@media (max-width: 480px) {
+@media (max-width:480px) {
 
     body {
         padding: 12px;
@@ -291,7 +293,7 @@ button {
 
 <div class="container">
 
-<!-- HEADER -->
+<!-- ================= HEADER ================= -->
 
 <div class="header">
 
@@ -304,7 +306,7 @@ button {
 </div>
 
 
-<!-- NAVIGASI -->
+<!-- ================= NAVIGASI ================= -->
 
 <div class="nav">
 
@@ -326,9 +328,9 @@ button {
 </div>
 
 
-<!-- ================================================= -->
-<!-- MENU PERPANJANG -->
-<!-- ================================================= -->
+<!-- =====================================================
+     PERPANJANG
+===================================================== -->
 
 <div
     id="menuPerpanjang"
@@ -336,6 +338,7 @@ button {
 >
 
     <h2>Kalkulator Perpanjang</h2>
+
 
     <div class="field">
 
@@ -436,9 +439,9 @@ button {
 </div>
 
 
-<!-- ================================================= -->
-<!-- MENU TEBUS -->
-<!-- ================================================= -->
+<!-- =====================================================
+     TEBUS
+===================================================== -->
 
 <div
     id="menuTebus"
@@ -515,8 +518,6 @@ button {
     </div>
 
 
-    <!-- SISA DENDA -->
-
     <div class="field">
 
         <label>
@@ -557,7 +558,7 @@ button {
 </div>
 
 
-<!-- FOOTER -->
+<!-- ================= FOOTER ================= -->
 
 <footer class="footer">
 
@@ -727,9 +728,7 @@ function tampilMenu(menu) {
 
         navTebus.className = "";
 
-    }
-
-    else {
+    } else {
 
         perpanjang.classList.add(
             "hidden"
@@ -814,6 +813,10 @@ function hitungPerpanjang() {
         100;
 
 
+    /*
+       Jatuh tempo akhir periode pertama
+    */
+
     const tempoAkhir =
         tambahHari(
             tempo,
@@ -821,36 +824,65 @@ function hitungPerpanjang() {
         );
 
 
-    let keterlambatan =
+    /*
+       Selisih proses dengan
+       jatuh tempo awal
+    */
+
+    let hariLewat =
         selisihHari(
             tempo,
             proses
         );
 
 
+    /*
+       Kalau proses sebelum jatuh tempo,
+       hari lewat dianggap 0
+    */
+
     if (
-        keterlambatan < 0
+        hariLewat < 0
     ) {
 
-        keterlambatan = 0;
+        hariLewat = 0;
 
     }
 
 
+    /*
+       DENDA
+    */
+
     const denda =
-        keterlambatan *
+        hariLewat *
         10000;
 
 
     /*
-       Perpanjang:
-       Jika proses 3 hari sebelum tempo akhir,
-       tetap dianggap perpanjang untuk periode tersebut.
+       =================================================
+       JUMLAH BUNGA PERPANJANG
+       =================================================
+
+       Perhitungan mengikuti periode.
+
+       5%:
+       Sampai tempo akhir = 1x
+       Lewat tempo akhir = 2x
+       Lewat 15 hari berikutnya = 3x
+       dst.
+
+       10%:
+       Sampai tempo akhir = 1x
+       Lewat tempo akhir = 2x
+       Lewat 30 hari berikutnya = 3x
+       dst.
     */
 
     let jumlahBunga = 1;
 
-    const hariDariTempoAkhir =
+
+    const lewatTempoAkhir =
         selisihHari(
             tempoAkhir,
             proses
@@ -858,23 +890,14 @@ function hitungPerpanjang() {
 
 
     if (
-        hariDariTempoAkhir >= -3
-    ) {
-
-        jumlahBunga = 1;
-
-    }
-
-
-    if (
-        hariDariTempoAkhir > 0
+        lewatTempoAkhir > 0
     ) {
 
         jumlahBunga =
             2 +
             Math.floor(
                 (
-                    hariDariTempoAkhir - 1
+                    lewatTempoAkhir - 1
                 ) / periode
             );
 
@@ -892,12 +915,112 @@ function hitungPerpanjang() {
         sisa;
 
 
+    /*
+       JATUH TEMPO BARU
+    */
+
     const tempoBaru =
         tambahHari(
-            tempo,
+            tempoAkhir,
             periode *
-            jumlahBunga
+            (jumlahBunga - 1)
         );
+
+
+    /* =================================================
+       KETERANGAN
+    ================================================= */
+
+    let keterangan = "";
+    let kelasStatus = "status-aman";
+
+
+    const sisaHariTempo =
+        selisihHari(
+            proses,
+            tempoAkhir
+        );
+
+
+    /*
+       MASIH SEBELUM JATUH TEMPO
+    */
+
+    if (
+        sisaHariTempo > 3
+    ) {
+
+        keterangan =
+            `Jatuh tempo berikutnya ${tanggalIndo(tempoAkhir)}.`;
+
+        kelasStatus =
+            "status-aman";
+
+    }
+
+
+    /*
+       3 HARI SEBELUM JATUH TEMPO
+    */
+
+    else if (
+        sisaHariTempo >= 0 &&
+        sisaHariTempo <= 3
+    ) {
+
+        keterangan =
+            `⚠️ Sudah memasuki ${sisaHariTempo} hari sebelum jatuh tempo (${tanggalIndo(tempoAkhir)}). Segera lakukan perpanjangan.`;
+
+        kelasStatus =
+            "status-warning";
+
+    }
+
+
+    /*
+       SUDAH LEWAT
+    */
+
+    else {
+
+        keterangan =
+            `⚠️ Lewat ${Math.abs(sisaHariTempo)} hari dari tanggal jatuh tempo ${tanggalIndo(tempoAkhir)}.`;
+
+        kelasStatus =
+            "status-danger";
+
+    }
+
+
+    /*
+       =================================================
+       TEKS WHATSAPP
+       =================================================
+    */
+
+    let teksDenda =
+        `Denda : ${rupiah(denda)}`;
+
+    if (
+        hariLewat > 0
+    ) {
+
+        teksDenda +=
+            ` (${hariLewat} hari lewat)`;
+
+    }
+
+
+    let teksSisa = "";
+
+    if (
+        sisa > 0
+    ) {
+
+        teksSisa =
+            `\nSisa Denda : ${rupiah(sisa)}`;
+
+    }
 
 
     teksPerpanjang =
@@ -910,13 +1033,18 @@ No. Rek : 1978693109
 A/N GADAI OGAN BARU
 
 Bunga : ${rupiah(totalBunga)} (${jumlahBunga}x bunga ${persen}%)
-Denda : ${rupiah(denda)}${keterlambatan > 0 ? ` (${keterlambatan} hari lewat)` : ""}
-${sisa > 0 ? `Sisa Denda : ${rupiah(sisa)}\n` : ""}
+${teksDenda}${teksSisa}
 *Total  : ${rupiah(total)}*
 
 Kalau sudah di transfer jangan lupa dikirim bukti pembayarannya dan nama akun pengirimnya yah Pak/Bu
 terimakasih 🙏😇`;
 
+
+    /*
+       =================================================
+       TAMPILKAN
+       =================================================
+    */
 
     const hasil =
         document.getElementById(
@@ -930,55 +1058,136 @@ terimakasih 🙏😇`;
     hasil.innerHTML = `
 
         <div class="baris">
-            <span>Nilai Gadai</span>
-            <strong>${rupiah(nilai)}</strong>
+
+            <span>
+                Nilai Gadai
+            </span>
+
+            <strong>
+                ${rupiah(nilai)}
+            </strong>
+
         </div>
 
-        <div class="baris">
-            <span>Jatuh Tempo Awal</span>
-            <strong>${tanggalIndo(tempo)}</strong>
-        </div>
 
         <div class="baris">
-            <span>Tanggal Perpanjang</span>
-            <strong>${tanggalIndo(proses)}</strong>
+
+            <span>
+                Jatuh Tempo Awal
+            </span>
+
+            <strong>
+                ${tanggalIndo(tempo)}
+            </strong>
+
         </div>
 
-        <div class="baris">
-            <span>Bunga</span>
-            <strong>${jumlahBunga}x ${persen}%</strong>
-        </div>
 
         <div class="baris">
-            <span>Jatuh Tempo Akhir</span>
-            <strong>${tanggalIndo(tempoBaru)}</strong>
+
+            <span>
+                Tanggal Perpanjang
+            </span>
+
+            <strong>
+                ${tanggalIndo(proses)}
+            </strong>
+
         </div>
 
-        <div class="baris">
-            <span>Total Bunga</span>
-            <strong>${rupiah(totalBunga)}</strong>
-        </div>
 
         <div class="baris">
-            <span>Denda</span>
-            <strong>${rupiah(denda)}</strong>
+
+            <span>
+                Bunga
+            </span>
+
+            <strong>
+                ${jumlahBunga}x ${persen}%
+            </strong>
+
         </div>
 
+
         <div class="baris">
-            <span>Sisa Denda</span>
-            <strong>${rupiah(sisa)}</strong>
+
+            <span>
+                Jatuh Tempo Berikutnya
+            </span>
+
+            <strong>
+                ${tanggalIndo(tempoBaru)}
+            </strong>
+
         </div>
+
+
+        <div class="baris">
+
+            <span>
+                Total Bunga
+            </span>
+
+            <strong>
+                ${rupiah(totalBunga)}
+            </strong>
+
+        </div>
+
+
+        <div class="baris">
+
+            <span>
+                Denda
+            </span>
+
+            <strong>
+                ${rupiah(denda)}
+            </strong>
+
+        </div>
+
+
+        <div class="baris">
+
+            <span>
+                Sisa Denda
+            </span>
+
+            <strong>
+                ${rupiah(sisa)}
+            </strong>
+
+        </div>
+
 
         <div class="baris total">
-            <span>TOTAL</span>
-            <strong>${rupiah(total)}</strong>
+
+            <span>
+                TOTAL BAYAR
+            </span>
+
+            <strong>
+                ${rupiah(total)}
+            </strong>
+
         </div>
+
+
+        <div class="status ${kelasStatus}">
+
+            ${keterangan}
+
+        </div>
+
 
         <button
             class="btn-salin"
             onclick="salinPerpanjang()"
         >
-            📋 SALIN RINCIAN
+
+            📋 SALIN RINCIAN PEMBAYARAN
+
         </button>
 
     `;
@@ -987,7 +1196,7 @@ terimakasih 🙏😇`;
 
 
 /* =====================================================
-   TEBUS GADAI
+   TEBUS
 ===================================================== */
 
 function hitungTebus() {
@@ -1004,7 +1213,7 @@ function hitungTebus() {
             "tempoTebus"
         ).value;
 
-    const tebus =
+    const tanggalTebus =
         document.getElementById(
             "tanggalTebus"
         ).value;
@@ -1027,7 +1236,7 @@ function hitungTebus() {
     if (
         !pokok ||
         !tempo ||
-        !tebus
+        !tanggalTebus
     ) {
 
         alert(
@@ -1039,14 +1248,14 @@ function hitungTebus() {
     }
 
 
-    /* ==============================================
+    /*
        HARI LEWAT
-    ============================================== */
+    */
 
     let hariLewat =
         selisihHari(
             tempo,
-            tebus
+            tanggalTebus
         );
 
 
@@ -1059,36 +1268,36 @@ function hitungTebus() {
     }
 
 
-    /* ==============================================
+    /*
        DENDA
-    ============================================== */
+    */
 
     const denda =
         hariLewat *
         10000;
 
 
-    /* ==============================================
+    /*
        JUMLAH BUNGA
-    ============================================== */
+    */
 
     let jumlahBunga = 0;
 
 
-    /* ==============================================
-       BUNGA 5%
+    /*
+       ===============================
+       5%
+       ===============================
 
        0 - 10   = 0x
        11 - 15  = 1x
        16 - 30  = 2x
        31 - 41  = 3x
        42 - 46  = 4x
-
-       Setelah itu pola berulang:
        47 - 61  = 5x
        62 - 76  = 6x
        dst.
-    ============================================== */
+    */
 
     if (
         persen === 5
@@ -1118,29 +1327,13 @@ function hitungTebus() {
 
         }
 
-        else if (
-            hariLewat <= 41
-        ) {
-
-            jumlahBunga = 3;
-
-        }
-
-        else if (
-            hariLewat <= 46
-        ) {
-
-            jumlahBunga = 4;
-
-        }
-
         else {
 
             jumlahBunga =
-                5 +
+                3 +
                 Math.floor(
                     (
-                        hariLewat - 47
+                        hariLewat - 31
                     ) / 15
                 );
 
@@ -1149,16 +1342,17 @@ function hitungTebus() {
     }
 
 
-    /* ==============================================
-       BUNGA 10%
+    /*
+       ===============================
+       10%
+       ===============================
 
-       0 - 15  = 0x
-       16 - 30 = 1x
-       31 - 45 = 2x
-       46 - 60 = 3x
-       61 - 75 = 4x
+       0 - 15   = 0x
+       16 - 30  = 1x
+       31 - 45  = 2x
+       46 - 60  = 3x
        dst.
-    ============================================== */
+    */
 
     else {
 
@@ -1185,9 +1379,9 @@ function hitungTebus() {
     }
 
 
-    /* ==============================================
-       HITUNG BUNGA
-    ============================================== */
+    /*
+       BUNGA
+    */
 
     const bungaSatu =
         pokok *
@@ -1200,14 +1394,9 @@ function hitungTebus() {
         jumlahBunga;
 
 
-    /* ==============================================
+    /*
        TOTAL
-
-       Pokok
-       + Bunga
-       + Denda
-       + Sisa Denda
-    ============================================== */
+    */
 
     const total =
         pokok +
@@ -1216,39 +1405,11 @@ function hitungTebus() {
         sisaDenda;
 
 
-    /* ==============================================
-       TEKS SALINAN
-    ============================================== */
-
-    let teksSisaDenda = "";
-
-    if (
-        sisaDenda > 0
-    ) {
-
-        teksSisaDenda =
-            `\nSisa Denda : ${rupiah(sisaDenda)}`;
-
-    }
-
-
-    teksTebus =
-
-`*PT. Gadai Ogan Baru*
-
-Tanggal Tebus : ${tanggalIndo(tebus)}
-Nilai Gadai : ${rupiah(pokok)}
-Bunga Keterlambatan : ${rupiah(bungaKeterlambatan)} (${jumlahBunga}x bunga ${persen}%)
-Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${teksSisaDenda}
-*TOTAL TEBUS : ${rupiah(total)}*`;
-
-
-    /* ==============================================
+    /*
        KETERANGAN
-    ============================================== */
+    */
 
     let keterangan;
-
 
     if (
         hariLewat === 0
@@ -1267,9 +1428,36 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
     }
 
 
-    /* ==============================================
+    /*
+       TEKS SALIN
+    */
+
+    let teksSisa = "";
+
+    if (
+        sisaDenda > 0
+    ) {
+
+        teksSisa =
+            `\nSisa Denda : ${rupiah(sisaDenda)}`;
+
+    }
+
+
+    teksTebus =
+
+`*PT. Gadai Ogan Baru*
+
+Tanggal Tebus : ${tanggalIndo(tanggalTebus)}
+Nilai Gadai : ${rupiah(pokok)}
+Bunga Keterlambatan : ${rupiah(bungaKeterlambatan)} (${jumlahBunga}x bunga ${persen}%)
+Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${teksSisa}
+*TOTAL TEBUS : ${rupiah(total)}*`;
+
+
+    /*
        HASIL
-    ============================================== */
+    */
 
     const hasil =
         document.getElementById(
@@ -1315,7 +1503,7 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
             </span>
 
             <strong>
-                ${tanggalIndo(tebus)}
+                ${tanggalIndo(tanggalTebus)}
             </strong>
 
         </div>
@@ -1407,9 +1595,7 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
 
 function salinPerpanjang() {
 
-    if (
-        !teksPerpanjang
-    ) {
+    if (!teksPerpanjang) {
 
         alert(
             "Hitung terlebih dahulu."
@@ -1432,9 +1618,7 @@ function salinPerpanjang() {
 
 function salinTebus() {
 
-    if (
-        !teksTebus
-    ) {
+    if (!teksTebus) {
 
         alert(
             "Hitung terlebih dahulu."
@@ -1452,7 +1636,7 @@ function salinTebus() {
 
 
 /* =====================================================
-   FUNGSI SALIN
+   SALIN TEKS
 ===================================================== */
 
 function salinTeks(teks) {
