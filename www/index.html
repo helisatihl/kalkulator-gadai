@@ -219,12 +219,6 @@ button {
     color: #765900;
 }
 
-.status-danger {
-    background: #ffeaea;
-    border: 1px solid #e58b8b;
-    color: #8b2020;
-}
-
 /* SALIN */
 
 .btn-salin {
@@ -521,6 +515,24 @@ button {
     </div>
 
 
+    <!-- SISA DENDA TEBUS -->
+
+    <div class="field">
+
+        <label>
+            Sisa Denda
+        </label>
+
+        <input
+            type="number"
+            id="sisaDendaTebus"
+            min="0"
+            placeholder="Isi jika ada sisa denda"
+        >
+
+    </div>
+
+
     <button
         class="btn-hitung-tebus"
         onclick="hitungTebus()"
@@ -809,7 +821,7 @@ function hitungPerpanjang() {
         );
 
 
-    const mulai2x =
+    const mulaiPeringatan =
         tambahHari(
             tempoAkhir,
             -3
@@ -820,7 +832,7 @@ function hitungPerpanjang() {
 
 
     if (
-        proses < mulai2x
+        proses < mulaiPeringatan
     ) {
 
         jumlahBunga = 1;
@@ -1011,6 +1023,13 @@ function hitungTebus() {
             ).value
         );
 
+    const sisaDenda =
+        Number(
+            document.getElementById(
+                "sisaDendaTebus"
+            ).value
+        ) || 0;
+
 
     if (
         !pokok ||
@@ -1048,8 +1067,7 @@ function hitungTebus() {
 
 
     /* ==============================================
-       DENDA
-       Rp10.000 / HARI
+       DENDA BARU
     ============================================== */
 
     const denda =
@@ -1064,20 +1082,18 @@ function hitungTebus() {
     let jumlahBunga = 0;
 
 
-    /*
-    ==============================================
-    BUNGA 5%
-    ==============================================
+    /* ==============================================
+       BUNGA 5%
 
-    0 - 10   = 0x
-    11 - 15  = 1x
-    16 - 30  = 2x
-    31 - 41  = 3x
-    42 - 46  = 4x
-    47 - 61  = 5x
-    62 - 76  = 6x
-    dst.
-    */
+       0 - 10   = 0x
+       11 - 15  = 1x
+       16 - 30  = 2x
+       31 - 41  = 3x
+       42 - 46  = 4x
+       47 - 61  = 5x
+       62 - 76  = 6x
+       dst.
+    ============================================== */
 
     if (
         persen === 5
@@ -1136,19 +1152,16 @@ function hitungTebus() {
     }
 
 
-    /*
-    ==============================================
-    BUNGA 10%
-    ==============================================
+    /* ==============================================
+       BUNGA 10%
 
-    0 - 15   = 0x
-    16 - 30  = 1x
-    31 - 45  = 2x
-    46 - 60  = 3x
-    61 - 75  = 4x
-    76 - 90  = 5x
-    dst.
-    */
+       0 - 15  = 0x
+       16 - 30 = 1x
+       31 - 45 = 2x
+       46 - 60 = 3x
+       61 - 75 = 4x
+       dst.
+    ============================================== */
 
     else {
 
@@ -1190,17 +1203,35 @@ function hitungTebus() {
 
     /* ==============================================
        TOTAL TEBUS
+
+       Pokok
+       + Bunga
+       + Denda Baru
+       + Sisa Denda
     ============================================== */
 
     const total =
         pokok +
         bungaKeterlambatan +
-        denda;
+        denda +
+        sisaDenda;
 
 
     /* ==============================================
        TEKS SALINAN
     ============================================== */
+
+    let teksSisaDenda = "";
+
+    if (
+        sisaDenda > 0
+    ) {
+
+        teksSisaDenda =
+            `\nSisa Denda : ${rupiah(sisaDenda)}`;
+
+    }
+
 
     teksTebus =
 
@@ -1208,8 +1239,8 @@ function hitungTebus() {
 
 Tanggal Tebus : ${tanggalIndo(tebus)}
 Nilai Gadai : ${rupiah(pokok)}
-Bunga Keterlambatan : ${rupiah(bungaKeterlambatan)}
-Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}
+Bunga Keterlambatan : ${rupiah(bungaKeterlambatan)} (${jumlahBunga}x bunga ${persen}%)
+Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${teksSisaDenda}
 *TOTAL TEBUS : ${rupiah(total)}*`;
 
 
@@ -1326,6 +1357,19 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}
 
             <strong>
                 ${rupiah(denda)}
+            </strong>
+
+        </div>
+
+
+        <div class="baris">
+
+            <span>
+                Sisa Denda
+            </span>
+
+            <strong>
+                ${rupiah(sisaDenda)}
             </strong>
 
         </div>
@@ -1549,6 +1593,10 @@ function resetTebus() {
     document.getElementById(
         "bungaTebus"
     ).value = "5";
+
+    document.getElementById(
+        "sisaDendaTebus"
+    ).value = "";
 
     document.getElementById(
         "hasilTebus"
