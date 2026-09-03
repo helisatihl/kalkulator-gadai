@@ -177,37 +177,38 @@ button {
     color: white;
 }
 
-.btn-call {
+/* ================= FOLLOW UP ACTION ================= */
+
+.followup-actions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.followup-actions button {
     width: 100%;
-    padding: 14px;
+    min-height: 48px;
+    padding: 10px 6px;
     border: none;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.btn-call {
     background: #28a745;
     color: white;
-    margin-top: 9px;
 }
 
 .btn-wa {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
     background: #25D366;
     color: white;
-    margin-top: 9px;
 }
 
 .btn-copy-followup {
-    width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
     background: #555;
     color: white;
-    margin-top: 9px;
 }
 
 /* ================= HASIL ================= */
@@ -359,8 +360,17 @@ button {
         padding: 12px 4px;
     }
 
-}
+    .followup-actions {
+        gap: 6px;
+    }
 
+    .followup-actions button {
+        font-size: 11px;
+        padding: 9px 3px;
+        min-height: 50px;
+    }
+
+}
 </style>
 
 </head>
@@ -389,22 +399,19 @@ button {
     <button
         id="navPerpanjang"
         class="active-perpanjang"
-        onclick="tampilMenu('perpanjang')"
-    >
+        onclick="tampilMenu('perpanjang')">
         🔄 Perpanjang
     </button>
 
     <button
         id="navTebus"
-        onclick="tampilMenu('tebus')"
-    >
+        onclick="tampilMenu('tebus')">
         🔓 Tebus Gadai
     </button>
 
     <button
         id="navFollowUp"
-        onclick="tampilMenu('followup')"
-    >
+        onclick="tampilMenu('followup')">
         📱 Follow Up
     </button>
 
@@ -415,109 +422,67 @@ button {
      PERPANJANG
 ===================================================== -->
 
-<div
-    id="menuPerpanjang"
-    class="card"
->
+<div id="menuPerpanjang" class="card">
 
     <h2>Kalkulator Perpanjang</h2>
 
-
     <div class="field">
-
         <label>Nilai Gadai</label>
-
         <input
             type="number"
             id="nilaiGadai"
             min="0"
-            placeholder="Contoh: 1000000"
-        >
-
+            placeholder="Contoh: 1000000">
     </div>
 
-
     <div class="field">
-
-        <label>
-            Tanggal Jatuh Tempo Awal
-        </label>
-
+        <label>Tanggal Jatuh Tempo Awal</label>
         <input
             type="date"
-            id="tanggalJatuhTempo"
-        >
-
+            id="tanggalJatuhTempo">
     </div>
 
-
     <div class="field">
-
-        <label>
-            Tanggal Perpanjang
-        </label>
-
+        <label>Tanggal Perpanjang</label>
         <input
             type="date"
-            id="tanggalProses"
-        >
-
+            id="tanggalProses">
     </div>
 
-
     <div class="field">
-
         <label>Pilih Bunga</label>
 
         <select id="bunga">
-
-            <option value="5">
-                5% / 15 Hari
-            </option>
-
-            <option value="10">
-                10% / 30 Hari
-            </option>
-
+            <option value="5">5% / 15 Hari</option>
+            <option value="10">10% / 30 Hari</option>
         </select>
-
     </div>
 
-
     <div class="field">
-
         <label>Sisa Denda</label>
-
         <input
             type="number"
             id="sisaDenda"
             min="0"
-            placeholder="Isi jika ada"
-        >
-
+            placeholder="Isi jika ada">
     </div>
-
 
     <button
         class="btn-hitung"
-        onclick="hitungPerpanjang()"
-    >
+        onclick="hitungPerpanjang()">
         HITUNG PERPANJANG
     </button>
 
-
     <button
         class="btn-reset"
-        onclick="resetPerpanjang()"
-    >
+        onclick="resetPerpanjang()">
         RESET
     </button>
 
-
     <div
         id="hasilPerpanjang"
-        class="hidden"
-    ></div>
+        class="hidden">
+    </div>
 
 </div>
 
@@ -526,18 +491,13 @@ button {
      TEBUS
 ===================================================== -->
 
-<div
-    id="menuTebus"
-    class="card hidden"
->
+<div id="menuTebus" class="card hidden">
 
     <h2 style="color:#092328;">
         Kalkulator Tebus Gadai
     </h2>
 
-
     <div class="field">
-
         <label>
             Nilai Gadai / Pokok Pinjaman
         </label>
@@ -546,97 +506,60 @@ button {
             type="number"
             id="nilaiTebus"
             min="0"
-            placeholder="Contoh: 1000000"
-        >
-
+            placeholder="Contoh: 1000000">
     </div>
 
-
     <div class="field">
-
-        <label>
-            Tanggal Jatuh Tempo
-        </label>
+        <label>Tanggal Jatuh Tempo</label>
 
         <input
             type="date"
-            id="tempoTebus"
-        >
-
+            id="tempoTebus">
     </div>
 
-
     <div class="field">
-
-        <label>
-            Tanggal Tebus
-        </label>
+        <label>Tanggal Tebus</label>
 
         <input
             type="date"
-            id="tanggalTebus"
-        >
-
+            id="tanggalTebus">
     </div>
 
-
     <div class="field">
-
-        <label>
-            Pilih Bunga
-        </label>
+        <label>Pilih Bunga</label>
 
         <select id="bungaTebus">
-
-            <option value="5">
-                5% / 15 Hari
-            </option>
-
-            <option value="10">
-                10% / 30 Hari
-            </option>
-
+            <option value="5">5% / 15 Hari</option>
+            <option value="10">10% / 30 Hari</option>
         </select>
-
     </div>
 
-
     <div class="field">
-
-        <label>
-            Sisa Denda
-        </label>
+        <label>Sisa Denda</label>
 
         <input
             type="number"
             id="sisaDendaTebus"
             min="0"
-            placeholder="Isi jika ada sisa denda"
-        >
-
+            placeholder="Isi jika ada sisa denda">
     </div>
-
 
     <button
         class="btn-hitung-tebus"
-        onclick="hitungTebus()"
-    >
+        onclick="hitungTebus()">
         HITUNG TEBUS
     </button>
 
-
     <button
         class="btn-reset"
-        onclick="resetTebus()"
-    >
+        onclick="resetTebus()">
         RESET
     </button>
 
-
     <div
         id="hasilTebus"
-        class="hidden"
-    ></div>
+        class="hidden">
+    </div>
 
 </div>
 
@@ -645,15 +568,11 @@ button {
      FOLLOW UP
 ===================================================== -->
 
-<div
-    id="menuFollowUp"
-    class="card hidden"
->
+<div id="menuFollowUp" class="card hidden">
 
     <h2 style="color:#25D366;">
         Follow Up Nasabah
     </h2>
-
 
     <div class="field">
 
@@ -664,11 +583,9 @@ button {
         <input
             type="tel"
             id="nomorHP"
-            placeholder="081234567890"
-        >
+            placeholder="081234567890">
 
     </div>
-
 
     <div class="field">
 
@@ -678,11 +595,9 @@ button {
 
         <input
             type="date"
-            id="tanggalFollowUp"
-        >
+            id="tanggalFollowUp">
 
     </div>
-
 
     <div class="field">
 
@@ -692,11 +607,9 @@ button {
 
         <input
             type="date"
-            id="tanggalHariIni"
-        >
+            id="tanggalHariIni">
 
     </div>
-
 
     <div class="field">
 
@@ -718,19 +631,16 @@ button {
 
     </div>
 
-
     <button
         class="btn-buat-followup"
-        onclick="buatPesanFollowUp()"
-    >
+        onclick="buatPesanFollowUp()">
         BUAT PESAN
     </button>
 
-
     <div
         id="hasilFollowUp"
-        class="hidden"
-    ></div>
+        class="hidden">
+    </div>
 
 </div>
 
@@ -744,7 +654,7 @@ button {
     </div>
 
     <div class="version">
-        Version 1.2
+        Version 1.3
     </div>
 
     <div class="year">
@@ -904,55 +814,37 @@ function tampilMenu(menu) {
         );
 
 
-    perpanjang.classList.add(
-        "hidden"
-    );
-
-    tebus.classList.add(
-        "hidden"
-    );
-
-    followup.classList.add(
-        "hidden"
-    );
+    perpanjang.classList.add("hidden");
+    tebus.classList.add("hidden");
+    followup.classList.add("hidden");
 
 
     navPerpanjang.className = "";
-
     navTebus.className = "";
-
     navFollowUp.className = "";
 
 
     if (menu === "perpanjang") {
 
-        perpanjang.classList.remove(
-            "hidden"
-        );
+        perpanjang.classList.remove("hidden");
 
         navPerpanjang.className =
             "active-perpanjang";
 
     }
 
-
     else if (menu === "tebus") {
 
-        tebus.classList.remove(
-            "hidden"
-        );
+        tebus.classList.remove("hidden");
 
         navTebus.className =
             "active-tebus";
 
     }
 
-
     else if (menu === "followup") {
 
-        followup.classList.remove(
-            "hidden"
-        );
+        followup.classList.remove("hidden");
 
         navFollowUp.className =
             "active-followup";
@@ -1000,11 +892,7 @@ function hitungPerpanjang() {
         ) || 0;
 
 
-    if (
-        !nilai ||
-        !tempo ||
-        !proses
-    ) {
+    if (!nilai || !tempo || !proses) {
 
         alert(
             "Mohon lengkapi data perpanjang."
@@ -1022,9 +910,7 @@ function hitungPerpanjang() {
 
 
     const bungaSatu =
-        nilai *
-        persen /
-        100;
+        nilai * persen / 100;
 
 
     const tempoAkhir =
@@ -1041,18 +927,13 @@ function hitungPerpanjang() {
         );
 
 
-    if (
-        hariLewat < 0
-    ) {
-
+    if (hariLewat < 0) {
         hariLewat = 0;
-
     }
 
 
     const denda =
-        hariLewat *
-        10000;
+        hariLewat * 10000;
 
 
     let jumlahBunga = 1;
@@ -1065,9 +946,7 @@ function hitungPerpanjang() {
         );
 
 
-    if (
-        lewatTempoAkhir > 0
-    ) {
+    if (lewatTempoAkhir > 0) {
 
         jumlahBunga =
             2 +
@@ -1081,8 +960,7 @@ function hitungPerpanjang() {
 
 
     const totalBunga =
-        bungaSatu *
-        jumlahBunga;
+        bungaSatu * jumlahBunga;
 
 
     const total =
@@ -1110,15 +988,12 @@ function hitungPerpanjang() {
         );
 
 
-    if (
-        sisaHariTempo > 3
-    ) {
+    if (sisaHariTempo > 3) {
 
         keterangan =
             `Jatuh tempo berikutnya ${tanggalIndo(tempoAkhir)}.`;
 
     }
-
 
     else if (
         sisaHariTempo >= 0 &&
@@ -1132,7 +1007,6 @@ function hitungPerpanjang() {
             "status-warning";
 
     }
-
 
     else {
 
@@ -1148,9 +1022,7 @@ function hitungPerpanjang() {
     let teksDenda =
         `Denda : ${rupiah(denda)}`;
 
-    if (
-        hariLewat > 0
-    ) {
+    if (hariLewat > 0) {
 
         teksDenda +=
             ` (${hariLewat} hari lewat)`;
@@ -1160,9 +1032,7 @@ function hitungPerpanjang() {
 
     let teksSisa = "";
 
-    if (
-        sisa > 0
-    ) {
+    if (sisa > 0) {
 
         teksSisa =
             `\nSisa Denda : ${rupiah(sisa)}`;
@@ -1296,11 +1166,7 @@ function hitungTebus() {
         ) || 0;
 
 
-    if (
-        !pokok ||
-        !tempo ||
-        !tanggalTebus
-    ) {
+    if (!pokok || !tempo || !tanggalTebus) {
 
         alert(
             "Mohon lengkapi data tebus."
@@ -1318,49 +1184,30 @@ function hitungTebus() {
         );
 
 
-    if (
-        hariLewat < 0
-    ) {
-
+    if (hariLewat < 0) {
         hariLewat = 0;
-
     }
 
 
     const denda =
-        hariLewat *
-        10000;
+        hariLewat * 10000;
 
 
     let jumlahBunga = 0;
 
 
-    if (
-        persen === 5
-    ) {
+    if (persen === 5) {
 
-        if (
-            hariLewat <= 10
-        ) {
-
+        if (hariLewat <= 10) {
             jumlahBunga = 0;
-
         }
 
-        else if (
-            hariLewat <= 15
-        ) {
-
+        else if (hariLewat <= 15) {
             jumlahBunga = 1;
-
         }
 
-        else if (
-            hariLewat <= 30
-        ) {
-
+        else if (hariLewat <= 30) {
             jumlahBunga = 2;
-
         }
 
         else {
@@ -1379,12 +1226,8 @@ function hitungTebus() {
 
     else {
 
-        if (
-            hariLewat <= 15
-        ) {
-
+        if (hariLewat <= 15) {
             jumlahBunga = 0;
-
         }
 
         else {
@@ -1423,9 +1266,7 @@ function hitungTebus() {
     let keterangan;
 
 
-    if (
-        hariLewat === 0
-    ) {
+    if (hariLewat === 0) {
 
         keterangan =
             "Ditebus sebelum atau tepat pada tanggal jatuh tempo.";
@@ -1442,9 +1283,7 @@ function hitungTebus() {
 
     let teksSisa = "";
 
-    if (
-        sisaDenda > 0
-    ) {
+    if (sisaDenda > 0) {
 
         teksSisa =
             `\nSisa Denda : ${rupiah(sisaDenda)}`;
@@ -1666,8 +1505,34 @@ function buatPesanFollowUp() {
             ${status}
         </div>
 
+
+        <!-- TOMBOL LANGSUNG DI ATAS -->
+
+        <div class="followup-actions">
+
+            <button
+                class="btn-wa"
+                onclick="kirimWhatsAppFollowUp()">
+                💬 KIRIM WA
+            </button>
+
+            <button
+                class="btn-call"
+                onclick="teleponNasabah()">
+                📞 TELEPON
+            </button>
+
+            <button
+                class="btn-copy-followup"
+                onclick="salinPesanLamaFollowUp()">
+                📋 SALIN TEKS
+            </button>
+
+        </div>
+
+
         <label>
-            Pesan Follow Up WhatsApp
+            Preview Pesan WhatsApp
         </label>
 
         <textarea
@@ -1683,32 +1548,9 @@ function buatPesanFollowUp() {
                 font-family:Arial,sans-serif;
                 font-size:14px;
                 line-height:1.5;
+                background:white;
             "
         >${pesanFollowUp}</textarea>
-
-
-        <button
-            class="btn-call"
-            onclick="teleponNasabah()"
-        >
-            📞 Telepon Nasabah
-        </button>
-
-
-        <button
-            class="btn-wa"
-            onclick="kirimWhatsAppFollowUp()"
-        >
-            💬 Kirim WhatsApp
-        </button>
-
-
-        <button
-            class="btn-copy-followup"
-            onclick="salinPesanLamaFollowUp()"
-        >
-            📋 Salin Pesan
-        </button>
 
     `;
 
@@ -1724,14 +1566,7 @@ function buatPesanWhatsApp(
     bunga
 ) {
 
-
-    /*
-       LELANG
-
-       BERLAKU UNTUK SEMUA BUNGA
-
-       Mulai lewat lebih dari 10 hari
-    */
+    /* LELANG */
 
     if (
         selisih < 0 &&
@@ -1757,13 +1592,6 @@ function buatPesanWhatsApp(
 
         }
 
-        else if (selisih === 2) {
-
-            keteranganWaktu =
-                "AKAN JATUH TEMPO 2 HARI LAGI";
-
-        }
-
         else {
 
             keteranganWaktu =
@@ -1785,31 +1613,15 @@ function buatPesanWhatsApp(
         const lewat =
             Math.abs(selisih);
 
-
-        if (lewat === 1) {
-
-            keteranganWaktu =
-                "TELAH MELEWATI TANGGAL JATUH TEMPO 1 HARI";
-
-        }
-
-        else {
-
-            keteranganWaktu =
-                `TELAH MELEWATI TANGGAL JATUH TEMPO ${lewat} HARI`;
-
-        }
+        keteranganWaktu =
+            `TELAH MELEWATI TANGGAL JATUH TEMPO ${lewat} HARI`;
 
     }
 
 
-    /*
-       PESAN 5%
-    */
+    /* PESAN 5% */
 
-    if (
-        bunga === "5"
-    ) {
+    if (bunga === "5") {
 
         return `*"PT. GADAI OGAN BARU"* 
 *OUTLET 07*
@@ -1825,9 +1637,7 @@ Jika barang jaminan *ingin ditebus dan barang jaminannya masih ada* dan belum te
     }
 
 
-    /*
-       PESAN 10%
-    */
+    /* PESAN 10% */
 
     return `*"PT. GADAI OGAN BARU"* 
 *OUTLET 07*
@@ -1845,7 +1655,6 @@ Jika barang jaminan *ingin ditebus dan barang jaminannya masih ada* dan belum te
 
 /* =====================================================
    PESAN LAMA UNTUK SALIN
-   TIDAK DIUBAH
 ===================================================== */
 
 function buatPesanLamaFollowUp(
@@ -1950,9 +1759,7 @@ function teleponNasabah() {
         );
 
 
-    if (
-        nomor.startsWith("0")
-    ) {
+    if (nomor.startsWith("0")) {
 
         nomor =
             "62" +
@@ -2004,6 +1811,17 @@ function kirimWhatsAppFollowUp() {
     }
 
 
+    if (!pesanFollowUp) {
+
+        alert(
+            "Silakan buat pesan terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+
     let nomor =
         nomorHP.replace(
             /\D/g,
@@ -2011,9 +1829,7 @@ function kirimWhatsAppFollowUp() {
         );
 
 
-    if (
-        nomor.startsWith("0")
-    ) {
+    if (nomor.startsWith("0")) {
 
         nomor =
             "62" +
@@ -2059,9 +1875,7 @@ function kirimWhatsAppFollowUp() {
 
 function salinPesanLamaFollowUp() {
 
-    if (
-        !pesanLamaFollowUp
-    ) {
+    if (!pesanLamaFollowUp) {
 
         alert(
             "Silakan buat pesan terlebih dahulu."
@@ -2074,7 +1888,7 @@ function salinPesanLamaFollowUp() {
 
     salinTeks(
         pesanLamaFollowUp,
-        "Pesan lama berhasil disalin."
+        "Pesan berhasil disalin."
     );
 
 }
@@ -2137,9 +1951,7 @@ function salinTeks(
     pesanBerhasil
 ) {
 
-    if (
-        navigator.clipboard
-    ) {
+    if (navigator.clipboard) {
 
         navigator.clipboard
             .writeText(teks)
@@ -2291,6 +2103,43 @@ function resetTebus() {
     ).innerHTML = "";
 
     teksTebus = "";
+
+}
+
+
+/* =====================================================
+   RESET FOLLOW UP
+===================================================== */
+
+function resetFollowUp() {
+
+    document.getElementById(
+        "nomorHP"
+    ).value = "";
+
+    document.getElementById(
+        "tanggalFollowUp"
+    ).value = "";
+
+    setTanggalHariIni(
+        "tanggalHariIni"
+    );
+
+    document.getElementById(
+        "bungaFollowUp"
+    ).value = "5";
+
+    document.getElementById(
+        "hasilFollowUp"
+    ).className =
+        "hidden";
+
+    document.getElementById(
+        "hasilFollowUp"
+    ).innerHTML = "";
+
+    pesanFollowUp = "";
+    pesanLamaFollowUp = "";
 
 }
 
