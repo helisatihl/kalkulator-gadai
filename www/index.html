@@ -57,12 +57,12 @@ body {
 
 .nav button {
     flex: 1;
-    padding: 13px 8px;
+    padding: 13px 6px;
     border-radius: 10px;
     border: 1px solid #ddd;
     background: white;
     color: #555;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .nav .active-perpanjang {
@@ -75,6 +75,12 @@ body {
     background: #092328;
     color: white;
     border-color: #092328;
+}
+
+.nav .active-followup {
+    background: #25D366;
+    color: white;
+    border-color: #25D366;
 }
 
 /* ================= CARD ================= */
@@ -159,6 +165,51 @@ button {
     color: white;
 }
 
+/* ================= FOLLOW UP BUTTON ================= */
+
+.btn-buat-followup {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #25D366;
+    color: white;
+}
+
+.btn-call {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #28a745;
+    color: white;
+    margin-top: 9px;
+}
+
+.btn-wa {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #25D366;
+    color: white;
+    margin-top: 9px;
+}
+
+.btn-copy-followup {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #555;
+    color: white;
+    margin-top: 9px;
+}
+
 /* ================= HASIL ================= */
 
 .hasil {
@@ -173,6 +224,14 @@ button {
     background: #092328;
     border-color: #092328;
     color: white;
+}
+
+.hasil-followup {
+    margin-top: 20px;
+    padding: 17px;
+    background: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 14px;
 }
 
 .baris {
@@ -192,6 +251,18 @@ button {
     margin-top: 5px;
     font-size: 20px;
     font-weight: bold;
+}
+
+/* ================= FOLLOW UP STATUS ================= */
+
+.followup-status {
+    padding: 15px;
+    border-radius: 10px;
+    background: #fff3cd;
+    color: #856404;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
 }
 
 /* ================= KETERANGAN ================= */
@@ -283,6 +354,11 @@ button {
         padding: 16px;
     }
 
+    .nav button {
+        font-size: 12px;
+        padding: 12px 4px;
+    }
+
 }
 
 </style>
@@ -300,7 +376,7 @@ button {
     <h1>Kalkulator Gadai</h1>
 
     <p>
-        Perhitungan perpanjang & tebus gadai
+        Perhitungan gadai, perpanjang, tebus & follow up
     </p>
 
 </div>
@@ -323,6 +399,13 @@ button {
         onclick="tampilMenu('tebus')"
     >
         🔓 Tebus Gadai
+    </button>
+
+    <button
+        id="navFollowUp"
+        onclick="tampilMenu('followup')"
+    >
+        📱 Follow Up
     </button>
 
 </div>
@@ -558,6 +641,100 @@ button {
 </div>
 
 
+<!-- =====================================================
+     FOLLOW UP
+===================================================== -->
+
+<div
+    id="menuFollowUp"
+    class="card hidden"
+>
+
+    <h2 style="color:#25D366;">
+        Follow Up Nasabah
+    </h2>
+
+
+    <div class="field">
+
+        <label>
+            Nomor WhatsApp / HP Nasabah
+        </label>
+
+        <input
+            type="tel"
+            id="nomorHP"
+            placeholder="081234567890"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>
+            Tanggal Jatuh Tempo
+        </label>
+
+        <input
+            type="date"
+            id="tanggalFollowUp"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>
+            Tanggal Hari Ini
+        </label>
+
+        <input
+            type="date"
+            id="tanggalHariIni"
+        >
+
+    </div>
+
+
+    <div class="field">
+
+        <label>
+            Bunga Gadai
+        </label>
+
+        <select id="bungaFollowUp">
+
+            <option value="5">
+                5%
+            </option>
+
+            <option value="10">
+                10%
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <button
+        class="btn-buat-followup"
+        onclick="buatPesanFollowUp()"
+    >
+        BUAT PESAN
+    </button>
+
+
+    <div
+        id="hasilFollowUp"
+        class="hidden"
+    ></div>
+
+</div>
+
+
 <!-- ================= FOOTER ================= -->
 
 <footer class="footer">
@@ -567,7 +744,7 @@ button {
     </div>
 
     <div class="version">
-        Version 1.0
+        Version 1.2
     </div>
 
     <div class="year">
@@ -587,6 +764,9 @@ button {
 
 let teksPerpanjang = "";
 let teksTebus = "";
+
+let pesanFollowUp = "";
+let pesanLamaFollowUp = "";
 
 
 /* =====================================================
@@ -702,6 +882,12 @@ function tampilMenu(menu) {
             "menuTebus"
         );
 
+    const followup =
+        document.getElementById(
+            "menuFollowUp"
+        );
+
+
     const navPerpanjang =
         document.getElementById(
             "navPerpanjang"
@@ -712,6 +898,31 @@ function tampilMenu(menu) {
             "navTebus"
         );
 
+    const navFollowUp =
+        document.getElementById(
+            "navFollowUp"
+        );
+
+
+    perpanjang.classList.add(
+        "hidden"
+    );
+
+    tebus.classList.add(
+        "hidden"
+    );
+
+    followup.classList.add(
+        "hidden"
+    );
+
+
+    navPerpanjang.className = "";
+
+    navTebus.className = "";
+
+    navFollowUp.className = "";
+
 
     if (menu === "perpanjang") {
 
@@ -719,29 +930,32 @@ function tampilMenu(menu) {
             "hidden"
         );
 
-        tebus.classList.add(
-            "hidden"
-        );
-
         navPerpanjang.className =
             "active-perpanjang";
 
-        navTebus.className = "";
+    }
 
-    } else {
 
-        perpanjang.classList.add(
-            "hidden"
-        );
+    else if (menu === "tebus") {
 
         tebus.classList.remove(
             "hidden"
         );
 
-        navPerpanjang.className = "";
-
         navTebus.className =
             "active-tebus";
+
+    }
+
+
+    else if (menu === "followup") {
+
+        followup.classList.remove(
+            "hidden"
+        );
+
+        navFollowUp.className =
+            "active-followup";
 
     }
 
@@ -813,10 +1027,6 @@ function hitungPerpanjang() {
         100;
 
 
-    /*
-       Jatuh tempo akhir periode pertama
-    */
-
     const tempoAkhir =
         tambahHari(
             tempo,
@@ -824,22 +1034,12 @@ function hitungPerpanjang() {
         );
 
 
-    /*
-       Selisih proses dengan
-       jatuh tempo awal
-    */
-
     let hariLewat =
         selisihHari(
             tempo,
             proses
         );
 
-
-    /*
-       Kalau proses sebelum jatuh tempo,
-       hari lewat dianggap 0
-    */
 
     if (
         hariLewat < 0
@@ -850,34 +1050,10 @@ function hitungPerpanjang() {
     }
 
 
-    /*
-       DENDA
-    */
-
     const denda =
         hariLewat *
         10000;
 
-
-    /*
-       =================================================
-       JUMLAH BUNGA PERPANJANG
-       =================================================
-
-       Perhitungan mengikuti periode.
-
-       5%:
-       Sampai tempo akhir = 1x
-       Lewat tempo akhir = 2x
-       Lewat 15 hari berikutnya = 3x
-       dst.
-
-       10%:
-       Sampai tempo akhir = 1x
-       Lewat tempo akhir = 2x
-       Lewat 30 hari berikutnya = 3x
-       dst.
-    */
 
     let jumlahBunga = 1;
 
@@ -915,10 +1091,6 @@ function hitungPerpanjang() {
         sisa;
 
 
-    /*
-       JATUH TEMPO BARU
-    */
-
     const tempoBaru =
         tambahHari(
             tempoAkhir,
@@ -926,10 +1098,6 @@ function hitungPerpanjang() {
             (jumlahBunga - 1)
         );
 
-
-    /* =================================================
-       KETERANGAN
-    ================================================= */
 
     let keterangan = "";
     let kelasStatus = "status-aman";
@@ -942,10 +1110,6 @@ function hitungPerpanjang() {
         );
 
 
-    /*
-       MASIH SEBELUM JATUH TEMPO
-    */
-
     if (
         sisaHariTempo > 3
     ) {
@@ -953,15 +1117,8 @@ function hitungPerpanjang() {
         keterangan =
             `Jatuh tempo berikutnya ${tanggalIndo(tempoAkhir)}.`;
 
-        kelasStatus =
-            "status-aman";
-
     }
 
-
-    /*
-       3 HARI SEBELUM JATUH TEMPO
-    */
 
     else if (
         sisaHariTempo >= 0 &&
@@ -977,10 +1134,6 @@ function hitungPerpanjang() {
     }
 
 
-    /*
-       SUDAH LEWAT
-    */
-
     else {
 
         keterangan =
@@ -991,12 +1144,6 @@ function hitungPerpanjang() {
 
     }
 
-
-    /*
-       =================================================
-       TEKS WHATSAPP
-       =================================================
-    */
 
     let teksDenda =
         `Denda : ${rupiah(denda)}`;
@@ -1040,12 +1187,6 @@ Kalau sudah di transfer jangan lupa dikirim bukti pembayarannya dan nama akun pe
 terimakasih 🙏😇`;
 
 
-    /*
-       =================================================
-       TAMPILKAN
-       =================================================
-    */
-
     const hasil =
         document.getElementById(
             "hasilPerpanjang"
@@ -1058,136 +1199,58 @@ terimakasih 🙏😇`;
     hasil.innerHTML = `
 
         <div class="baris">
-
-            <span>
-                Nilai Gadai
-            </span>
-
-            <strong>
-                ${rupiah(nilai)}
-            </strong>
-
+            <span>Nilai Gadai</span>
+            <strong>${rupiah(nilai)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Jatuh Tempo Awal
-            </span>
-
-            <strong>
-                ${tanggalIndo(tempo)}
-            </strong>
-
+            <span>Jatuh Tempo Awal</span>
+            <strong>${tanggalIndo(tempo)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Tanggal Perpanjang
-            </span>
-
-            <strong>
-                ${tanggalIndo(proses)}
-            </strong>
-
+            <span>Tanggal Perpanjang</span>
+            <strong>${tanggalIndo(proses)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Bunga
-            </span>
-
-            <strong>
-                ${jumlahBunga}x ${persen}%
-            </strong>
-
+            <span>Bunga</span>
+            <strong>${jumlahBunga}x ${persen}%</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Jatuh Tempo Berikutnya
-            </span>
-
-            <strong>
-                ${tanggalIndo(tempoBaru)}
-            </strong>
-
+            <span>Jatuh Tempo Berikutnya</span>
+            <strong>${tanggalIndo(tempoBaru)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Total Bunga
-            </span>
-
-            <strong>
-                ${rupiah(totalBunga)}
-            </strong>
-
+            <span>Total Bunga</span>
+            <strong>${rupiah(totalBunga)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Denda
-            </span>
-
-            <strong>
-                ${rupiah(denda)}
-            </strong>
-
+            <span>Denda</span>
+            <strong>${rupiah(denda)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Sisa Denda
-            </span>
-
-            <strong>
-                ${rupiah(sisa)}
-            </strong>
-
+            <span>Sisa Denda</span>
+            <strong>${rupiah(sisa)}</strong>
         </div>
-
 
         <div class="baris total">
-
-            <span>
-                TOTAL BAYAR
-            </span>
-
-            <strong>
-                ${rupiah(total)}
-            </strong>
-
+            <span>TOTAL BAYAR</span>
+            <strong>${rupiah(total)}</strong>
         </div>
-
 
         <div class="status ${kelasStatus}">
-
             ${keterangan}
-
         </div>
-
 
         <button
             class="btn-salin"
-            onclick="salinPerpanjang()"
-        >
-
+            onclick="salinPerpanjang()">
             📋 SALIN RINCIAN PEMBAYARAN
-
         </button>
 
     `;
@@ -1248,10 +1311,6 @@ function hitungTebus() {
     }
 
 
-    /*
-       HARI LEWAT
-    */
-
     let hariLewat =
         selisihHari(
             tempo,
@@ -1268,36 +1327,13 @@ function hitungTebus() {
     }
 
 
-    /*
-       DENDA
-    */
-
     const denda =
         hariLewat *
         10000;
 
 
-    /*
-       JUMLAH BUNGA
-    */
-
     let jumlahBunga = 0;
 
-
-    /*
-       ===============================
-       5%
-       ===============================
-
-       0 - 10   = 0x
-       11 - 15  = 1x
-       16 - 30  = 2x
-       31 - 41  = 3x
-       42 - 46  = 4x
-       47 - 61  = 5x
-       62 - 76  = 6x
-       dst.
-    */
 
     if (
         persen === 5
@@ -1341,19 +1377,6 @@ function hitungTebus() {
 
     }
 
-
-    /*
-       ===============================
-       10%
-       ===============================
-
-       0 - 15   = 0x
-       16 - 30  = 1x
-       31 - 45  = 2x
-       46 - 60  = 3x
-       dst.
-    */
-
     else {
 
         if (
@@ -1379,10 +1402,6 @@ function hitungTebus() {
     }
 
 
-    /*
-       BUNGA
-    */
-
     const bungaSatu =
         pokok *
         persen /
@@ -1394,10 +1413,6 @@ function hitungTebus() {
         jumlahBunga;
 
 
-    /*
-       TOTAL
-    */
-
     const total =
         pokok +
         bungaKeterlambatan +
@@ -1405,11 +1420,8 @@ function hitungTebus() {
         sisaDenda;
 
 
-    /*
-       KETERANGAN
-    */
-
     let keterangan;
+
 
     if (
         hariLewat === 0
@@ -1427,10 +1439,6 @@ function hitungTebus() {
 
     }
 
-
-    /*
-       TEKS SALIN
-    */
 
     let teksSisa = "";
 
@@ -1455,10 +1463,6 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
 *TOTAL TEBUS : ${rupiah(total)}*`;
 
 
-    /*
-       HASIL
-    */
-
     const hasil =
         document.getElementById(
             "hasilTebus"
@@ -1471,120 +1475,607 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
     hasil.innerHTML = `
 
         <div class="baris">
-
-            <span>
-                Nilai Gadai
-            </span>
-
-            <strong>
-                ${rupiah(pokok)}
-            </strong>
-
+            <span>Nilai Gadai</span>
+            <strong>${rupiah(pokok)}</strong>
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Jatuh Tempo
-            </span>
-
-            <strong>
-                ${tanggalIndo(tempo)}
-            </strong>
-
+            <span>Jatuh Tempo</span>
+            <strong>${tanggalIndo(tempo)}</strong>
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Tanggal Tebus
-            </span>
-
-            <strong>
-                ${tanggalIndo(tanggalTebus)}
-            </strong>
-
+            <span>Tanggal Tebus</span>
+            <strong>${tanggalIndo(tanggalTebus)}</strong>
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Keterangan
-            </span>
-
-            <strong>
-                ${keterangan}
-            </strong>
-
+            <span>Keterangan</span>
+            <strong>${keterangan}</strong>
         </div>
 
-
         <div class="baris">
-
-            <span>
-                Bunga Keterlambatan
-            </span>
-
+            <span>Bunga Keterlambatan</span>
             <strong>
                 ${rupiah(bungaKeterlambatan)}
                 (${jumlahBunga}x bunga ${persen}%)
             </strong>
-
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Denda
-            </span>
-
-            <strong>
-                ${rupiah(denda)}
-            </strong>
-
+            <span>Denda</span>
+            <strong>${rupiah(denda)}</strong>
         </div>
-
 
         <div class="baris">
-
-            <span>
-                Sisa Denda
-            </span>
-
-            <strong>
-                ${rupiah(sisaDenda)}
-            </strong>
-
+            <span>Sisa Denda</span>
+            <strong>${rupiah(sisaDenda)}</strong>
         </div>
-
 
         <div class="baris total">
-
-            <span>
-                TOTAL TEBUS
-            </span>
-
-            <strong>
-                ${rupiah(total)}
-            </strong>
-
+            <span>TOTAL TEBUS</span>
+            <strong>${rupiah(total)}</strong>
         </div>
-
 
         <button
             class="btn-salin"
-            onclick="salinTebus()"
-        >
-
+            onclick="salinTebus()">
             📋 SALIN RINCIAN TEBUS
-
         </button>
 
     `;
+
+}
+
+
+/* =====================================================
+   FOLLOW UP
+===================================================== */
+
+function buatPesanFollowUp() {
+
+    const nomor =
+        document.getElementById(
+            "nomorHP"
+        ).value.trim();
+
+    const tempo =
+        document.getElementById(
+            "tanggalFollowUp"
+        ).value;
+
+    const hariIni =
+        document.getElementById(
+            "tanggalHariIni"
+        ).value;
+
+    const bunga =
+        document.getElementById(
+            "bungaFollowUp"
+        ).value;
+
+
+    if (!nomor) {
+
+        alert(
+            "Silakan masukkan nomor HP nasabah."
+        );
+
+        return;
+
+    }
+
+
+    if (!tempo) {
+
+        alert(
+            "Silakan masukkan tanggal jatuh tempo."
+        );
+
+        return;
+
+    }
+
+
+    if (!hariIni) {
+
+        alert(
+            "Silakan masukkan tanggal hari ini."
+        );
+
+        return;
+
+    }
+
+
+    const selisih =
+        selisihHari(
+            hariIni,
+            tempo
+        );
+
+
+    let status = "";
+
+
+    if (selisih > 0) {
+
+        if (selisih === 1) {
+
+            status =
+                "H-1 — Besok Jatuh Tempo";
+
+        }
+
+        else if (selisih === 2) {
+
+            status =
+                "H-2 — 2 Hari Lagi";
+
+        }
+
+        else {
+
+            status =
+                `H-${selisih} — ${selisih} Hari Lagi`;
+
+        }
+
+    }
+
+    else if (selisih === 0) {
+
+        status =
+            "HARI H — Jatuh Tempo Hari Ini";
+
+    }
+
+    else {
+
+        status =
+            `Lewat ${Math.abs(selisih)} Hari`;
+
+    }
+
+
+    pesanFollowUp =
+        buatPesanWhatsApp(
+            selisih,
+            bunga
+        );
+
+
+    buatPesanLamaFollowUp(
+        selisih
+    );
+
+
+    const hasil =
+        document.getElementById(
+            "hasilFollowUp"
+        );
+
+
+    hasil.className =
+        "hasil-followup";
+
+
+    hasil.innerHTML = `
+
+        <div class="followup-status">
+            ${status}
+        </div>
+
+        <label>
+            Pesan Follow Up WhatsApp
+        </label>
+
+        <textarea
+            id="pesanFollowUp"
+            readonly
+            style="
+                width:100%;
+                min-height:330px;
+                resize:vertical;
+                padding:13px;
+                border:1px solid #ddd;
+                border-radius:10px;
+                font-family:Arial,sans-serif;
+                font-size:14px;
+                line-height:1.5;
+            "
+        >${pesanFollowUp}</textarea>
+
+
+        <button
+            class="btn-call"
+            onclick="teleponNasabah()"
+        >
+            📞 Telepon Nasabah
+        </button>
+
+
+        <button
+            class="btn-wa"
+            onclick="kirimWhatsAppFollowUp()"
+        >
+            💬 Kirim WhatsApp
+        </button>
+
+
+        <button
+            class="btn-copy-followup"
+            onclick="salinPesanLamaFollowUp()"
+        >
+            📋 Salin Pesan
+        </button>
+
+    `;
+
+}
+
+
+/* =====================================================
+   PEMBUAT PESAN WHATSAPP
+===================================================== */
+
+function buatPesanWhatsApp(
+    selisih,
+    bunga
+) {
+
+
+    /*
+       LELANG
+
+       BERLAKU UNTUK SEMUA BUNGA
+
+       Mulai lewat lebih dari 10 hari
+    */
+
+    if (
+        selisih < 0 &&
+        Math.abs(selisih) > 10
+    ) {
+
+        return `Pemberitahuan...
+
+*"PT. GADAI OGAN BARU"* bahwa barang gadai Bapak/Ibu akan di *LELANG*, dikarenakan *sudah lewat lebih 10 hari* dari tgl jatuh tempo. Terima kasih 🙏`;
+
+    }
+
+
+    let keteranganWaktu = "";
+
+
+    if (selisih > 0) {
+
+        if (selisih === 1) {
+
+            keteranganWaktu =
+                "AKAN JATUH TEMPO BESOK";
+
+        }
+
+        else if (selisih === 2) {
+
+            keteranganWaktu =
+                "AKAN JATUH TEMPO 2 HARI LAGI";
+
+        }
+
+        else {
+
+            keteranganWaktu =
+                `AKAN JATUH TEMPO ${selisih} HARI LAGI`;
+
+        }
+
+    }
+
+    else if (selisih === 0) {
+
+        keteranganWaktu =
+            "TELAH JATUH TEMPO HARI INI";
+
+    }
+
+    else {
+
+        const lewat =
+            Math.abs(selisih);
+
+
+        if (lewat === 1) {
+
+            keteranganWaktu =
+                "TELAH MELEWATI TANGGAL JATUH TEMPO 1 HARI";
+
+        }
+
+        else {
+
+            keteranganWaktu =
+                `TELAH MELEWATI TANGGAL JATUH TEMPO ${lewat} HARI`;
+
+        }
+
+    }
+
+
+    /*
+       PESAN 5%
+    */
+
+    if (
+        bunga === "5"
+    ) {
+
+        return `*"PT. GADAI OGAN BARU"* 
+*OUTLET 07*
+
+Barang gadai Bapak/Ibu _*${keteranganWaktu}*_ .Segera di tebus/diperpanjang, jika lewat 1 hari dari tanggal jatuh tempo maka akan dikenakan *denda Rp.10.000/harinya* . Jika dalam tempo 10 hari setelah tanggal jatuh tempo barang tidak diperpanjang/ditebus maka barang gadai bapak/ibu akan kami lelang/kami jual. Maksimal perpanjang jatuh tempo gadai hanya 4 kali.
+
+*Apabila bapak/ibu mau perpanjang segera datang ke *PT. GADAI OGAN BARU* atau *via Transfer ke rekening kami (hubungi via whatsapp)*
+
+Jika barang jaminan *ingin ditebus dan barang jaminannya masih ada* dan belum terjual maka barang jaminan yang sudah melebihi 10 ( Sepuluh ) hari dari tanggal jatuh tempo maka akan dikenakan *Bunga keterlambatan tebus 5% + denda* 
+
+*Terima kasih*😊🙏`;
+
+    }
+
+
+    /*
+       PESAN 10%
+    */
+
+    return `*"PT. GADAI OGAN BARU"* 
+*OUTLET 07*
+
+Barang gadai Bapak/Ibu _*${keteranganWaktu}*_ . Segera di tebus/diperpanjang, jika lewat 1 hari dari tanggal jatuh tempo maka akan dikenakan *denda Rp.10.000/harinya* . Jika dalam tempo 10 hari setelah tanggal jatuh tempo barang tidak diperpanjang/ditebus maka barang gadai bapak/ibu akan kami lelang/kami jual. Maksimal perpanjang jatuh tempo gadai hanya 4 kali.
+
+*Apabila bapak/ibu mau perpanjang segera datang ke *PT. GADAI OGAN BARU* atau *via Transfer ke rekening kami (hubungi via whatsapp)*
+
+Jika barang jaminan *ingin ditebus dan barang jaminannya masih ada* dan belum terjual maka barang jaminan yang sudah melebihi 15 ( Lima Belas ) hari dari tanggal jatuh tempo maka akan dikenakan *Bunga keterlambatan tebus 10%+Denda*
+
+*Terima kasih* 😊🙏`;
+
+}
+
+
+/* =====================================================
+   PESAN LAMA UNTUK SALIN
+   TIDAK DIUBAH
+===================================================== */
+
+function buatPesanLamaFollowUp(
+    selisih
+) {
+
+    let keteranganLama = "";
+
+
+    if (selisih > 0) {
+
+        if (selisih === 1) {
+
+            keteranganLama =
+                "Barang Gadai Bapak/Ibu akan jatuh tempo besok.";
+
+        }
+
+        else if (selisih === 2) {
+
+            keteranganLama =
+                "Barang Gadai Bapak/Ibu akan jatuh tempo 2 hari lagi.";
+
+        }
+
+        else {
+
+            keteranganLama =
+                `Barang Gadai Bapak/Ibu akan jatuh tempo ${selisih} hari lagi.`;
+
+        }
+
+    }
+
+    else if (selisih === 0) {
+
+        keteranganLama =
+            "Barang Gadai Bapak/Ibu telah jatuh tempo hari ini.";
+
+    }
+
+    else {
+
+        const lewat =
+            Math.abs(selisih);
+
+
+        if (lewat === 1) {
+
+            keteranganLama =
+                "Barang Gadai Bapak/Ibu telah melewati tanggal jatuh tempo 1 hari.";
+
+        }
+
+        else {
+
+            keteranganLama =
+                `Barang Gadai Bapak/Ibu telah melewati tanggal jatuh tempo ${lewat} hari.`;
+
+        }
+
+    }
+
+
+    pesanLamaFollowUp =
+`PEMBERITAHUAN
+PT. GADAI OGAN BARU
+OUTLET 07 MARELAN
+
+${keteranganLama} Segera melakukan perpanjangan atau ditebus untuk menghindari denda keterlambatan. Terimakasih.`;
+
+}
+
+
+/* =====================================================
+   TELEPON NASABAH
+===================================================== */
+
+function teleponNasabah() {
+
+    const nomorHP =
+        document.getElementById(
+            "nomorHP"
+        ).value.trim();
+
+
+    if (!nomorHP) {
+
+        alert(
+            "Silakan masukkan nomor HP nasabah."
+        );
+
+        return;
+
+    }
+
+
+    let nomor =
+        nomorHP.replace(
+            /\D/g,
+            ""
+        );
+
+
+    if (
+        nomor.startsWith("0")
+    ) {
+
+        nomor =
+            "62" +
+            nomor.substring(1);
+
+    }
+
+
+    if (
+        nomor.length < 10 ||
+        nomor.length > 15
+    ) {
+
+        alert(
+            "Nomor HP tidak valid."
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "tel:+" + nomor;
+
+}
+
+
+/* =====================================================
+   KIRIM WHATSAPP FOLLOW UP
+===================================================== */
+
+function kirimWhatsAppFollowUp() {
+
+    const nomorHP =
+        document.getElementById(
+            "nomorHP"
+        ).value.trim();
+
+
+    if (!nomorHP) {
+
+        alert(
+            "Silakan masukkan nomor HP nasabah."
+        );
+
+        return;
+
+    }
+
+
+    let nomor =
+        nomorHP.replace(
+            /\D/g,
+            ""
+        );
+
+
+    if (
+        nomor.startsWith("0")
+    ) {
+
+        nomor =
+            "62" +
+            nomor.substring(1);
+
+    }
+
+
+    if (
+        nomor.length < 10 ||
+        nomor.length > 15
+    ) {
+
+        alert(
+            "Nomor HP tidak valid."
+        );
+
+        return;
+
+    }
+
+
+    const url =
+        "https://wa.me/" +
+        nomor +
+        "?text=" +
+        encodeURIComponent(
+            pesanFollowUp
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   SALIN PESAN LAMA FOLLOW UP
+===================================================== */
+
+function salinPesanLamaFollowUp() {
+
+    if (
+        !pesanLamaFollowUp
+    ) {
+
+        alert(
+            "Silakan buat pesan terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+
+    salinTeks(
+        pesanLamaFollowUp,
+        "Pesan lama berhasil disalin."
+    );
 
 }
 
@@ -1606,7 +2097,8 @@ function salinPerpanjang() {
     }
 
     salinTeks(
-        teksPerpanjang
+        teksPerpanjang,
+        "Rincian berhasil disalin."
     );
 
 }
@@ -1629,17 +2121,21 @@ function salinTebus() {
     }
 
     salinTeks(
-        teksTebus
+        teksTebus,
+        "Rincian berhasil disalin."
     );
 
 }
 
 
 /* =====================================================
-   SALIN TEKS
+   FUNGSI SALIN
 ===================================================== */
 
-function salinTeks(teks) {
+function salinTeks(
+    teks,
+    pesanBerhasil
+) {
 
     if (
         navigator.clipboard
@@ -1651,14 +2147,17 @@ function salinTeks(teks) {
             .then(function() {
 
                 alert(
-                    "Rincian berhasil disalin. Silakan paste ke WhatsApp."
+                    pesanBerhasil
                 );
 
             })
 
             .catch(function() {
 
-                fallbackCopy(teks);
+                fallbackCopy(
+                    teks,
+                    pesanBerhasil
+                );
 
             });
 
@@ -1666,39 +2165,51 @@ function salinTeks(teks) {
 
     else {
 
-        fallbackCopy(teks);
+        fallbackCopy(
+            teks,
+            pesanBerhasil
+        );
 
     }
 
 }
 
 
-function fallbackCopy(teks) {
+function fallbackCopy(
+    teks,
+    pesanBerhasil
+) {
 
     const textarea =
         document.createElement(
             "textarea"
         );
 
+
     textarea.value =
         teks;
+
 
     document.body.appendChild(
         textarea
     );
 
+
     textarea.select();
+
 
     document.execCommand(
         "copy"
     );
 
+
     document.body.removeChild(
         textarea
     );
 
+
     alert(
-        "Rincian berhasil disalin."
+        pesanBerhasil
     );
 
 }
@@ -1793,18 +2304,28 @@ function setTanggalHariIni(id) {
     const sekarang =
         new Date();
 
+
     const tahun =
         sekarang.getFullYear();
+
 
     const bulan =
         String(
             sekarang.getMonth() + 1
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const hari =
         String(
             sekarang.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     document.getElementById(id).value =
         `${tahun}-${bulan}-${hari}`;
@@ -1822,6 +2343,10 @@ setTanggalHariIni(
 
 setTanggalHariIni(
     "tanggalTebus"
+);
+
+setTanggalHariIni(
+    "tanggalHariIni"
 );
 
 </script>
