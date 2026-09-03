@@ -255,6 +255,122 @@ button {
     border-radius: 14px;
 }
 
+/* =====================================================
+   RINCIAN PEMBAYARAN
+===================================================== */
+
+.rincian-box {
+    background: rgba(255,255,255,0.96);
+    border-radius: 14px;
+    padding: 15px;
+    color: #333;
+}
+
+.hasil-tebus .rincian-box {
+    background: rgba(255,255,255,0.06);
+    color: white;
+}
+
+.rincian-title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 13px;
+    padding-bottom: 11px;
+    border-bottom: 1px solid rgba(0,0,0,0.10);
+}
+
+.hasil-tebus .rincian-title {
+    border-bottom-color: rgba(255,255,255,0.20);
+}
+
+.rincian-section {
+    margin-bottom: 15px;
+}
+
+.rincian-section:last-child {
+    margin-bottom: 0;
+}
+
+.rincian-section-title {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    opacity: 0.6;
+    margin-bottom: 7px;
+}
+
+.rincian-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 9px 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.10);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.hasil-tebus .rincian-row {
+    border-bottom-color: rgba(255,255,255,0.15);
+}
+
+.rincian-row:last-child {
+    border-bottom: none;
+}
+
+.rincian-label {
+    flex: 1;
+    opacity: 0.75;
+}
+
+.rincian-value {
+    flex: 1;
+    text-align: right;
+    font-weight: bold;
+    word-break: break-word;
+}
+
+.rincian-label small {
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+    opacity: 0.65;
+    margin-top: 2px;
+}
+
+.rincian-total {
+    margin-top: 10px;
+    padding: 15px;
+    border-radius: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    font-size: 15px;
+    font-weight: bold;
+    background: rgba(255,255,255,0.72);
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.rincian-total strong {
+    font-size: 19px;
+    text-align: right;
+}
+
+.hasil-tebus .rincian-total {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.20);
+}
+
+.rincian-status {
+    margin-top: 12px;
+    padding: 11px 13px;
+    border-radius: 9px;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
 /* ================= FOLLOW UP STATUS ================= */
 
 .followup-status {
@@ -381,6 +497,24 @@ button {
         font-size: 11px;
         padding: 9px 3px;
         min-height: 50px;
+    }
+
+    .rincian-box {
+        padding: 13px;
+    }
+
+    .rincian-row {
+        gap: 10px;
+        font-size: 13px;
+    }
+
+    .rincian-total {
+        padding: 13px;
+        font-size: 14px;
+    }
+
+    .rincian-total strong {
+        font-size: 17px;
     }
 
 }
@@ -1058,54 +1192,134 @@ terimakasih 🙏😇`;
 
     hasil.innerHTML = `
 
-        <div class="baris">
-            <span>Nilai Gadai</span>
-            <strong>${rupiah(nilai)}</strong>
+        <div class="rincian-box">
+
+            <div class="rincian-title">
+                📋 Rincian Pembayaran Perpanjang
+            </div>
+
+            <div class="rincian-section">
+
+                <div class="rincian-section-title">
+                    Data Gadai
+                </div>
+
+                <div class="rincian-row">
+                    <span class="rincian-label">
+                        Nilai Gadai
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(nilai)}
+                    </strong>
+                </div>
+
+                <div class="rincian-row">
+                    <span class="rincian-label">
+                        Jatuh Tempo Awal
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${tanggalIndo(tempo)}
+                    </strong>
+                </div>
+
+                <div class="rincian-row">
+                    <span class="rincian-label">
+                        Tanggal Perpanjang
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${tanggalIndo(proses)}
+                    </strong>
+                </div>
+
+                <div class="rincian-row">
+                    <span class="rincian-label">
+                        Jatuh Tempo Berikutnya
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${tanggalIndo(tempoBaru)}
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="rincian-section">
+
+                <div class="rincian-section-title">
+                    Rincian Biaya
+                </div>
+
+                <div class="rincian-row rincian-biaya">
+
+                    <span class="rincian-label">
+                        Bunga
+                        <small>
+                            ${jumlahBunga} × ${persen}%
+                        </small>
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(totalBunga)}
+                    </strong>
+
+                </div>
+
+                <div class="rincian-row rincian-biaya">
+
+                    <span class="rincian-label">
+                        Denda
+                        <small>
+                            ${hariLewat > 0
+                                ? `${hariLewat} hari × Rp10.000`
+                                : "Tidak ada denda"
+                            }
+                        </small>
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(denda)}
+                    </strong>
+
+                </div>
+
+                <div class="rincian-row rincian-biaya">
+
+                    <span class="rincian-label">
+                        Sisa Denda
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(sisa)}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="rincian-total">
+
+                <span>
+                    TOTAL BAYAR
+                </span>
+
+                <strong>
+                    ${rupiah(total)}
+                </strong>
+
+            </div>
+
+
+            <div class="rincian-status ${kelasStatus}">
+                ${keterangan}
+            </div>
+
         </div>
 
-        <div class="baris">
-            <span>Jatuh Tempo Awal</span>
-            <strong>${tanggalIndo(tempo)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Tanggal Perpanjang</span>
-            <strong>${tanggalIndo(proses)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Bunga</span>
-            <strong>${jumlahBunga}x ${persen}%</strong>
-        </div>
-
-        <div class="baris">
-            <span>Jatuh Tempo Berikutnya</span>
-            <strong>${tanggalIndo(tempoBaru)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Total Bunga</span>
-            <strong>${rupiah(totalBunga)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Denda</span>
-            <strong>${rupiah(denda)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Sisa Denda</span>
-            <strong>${rupiah(sisa)}</strong>
-        </div>
-
-        <div class="baris total">
-            <span>TOTAL BAYAR</span>
-            <strong>${rupiah(total)}</strong>
-        </div>
-
-        <div class="status ${kelasStatus}">
-            ${keterangan}
-        </div>
 
         <button
             class="btn-salin"
@@ -1288,48 +1502,140 @@ Denda : ${rupiah(denda)}${hariLewat > 0 ? ` (${hariLewat} hari lewat)` : ""}${te
 
     hasil.innerHTML = `
 
-        <div class="baris">
-            <span>Nilai Gadai</span>
-            <strong>${rupiah(pokok)}</strong>
+        <div class="rincian-box">
+
+            <div class="rincian-title">
+                🔓 Rincian Pembayaran Tebus
+            </div>
+
+
+            <div class="rincian-section">
+
+                <div class="rincian-section-title">
+                    Data Gadai
+                </div>
+
+                <div class="rincian-row">
+
+                    <span class="rincian-label">
+                        Nilai Gadai / Pokok
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(pokok)}
+                    </strong>
+
+                </div>
+
+                <div class="rincian-row">
+
+                    <span class="rincian-label">
+                        Jatuh Tempo
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${tanggalIndo(tempo)}
+                    </strong>
+
+                </div>
+
+                <div class="rincian-row">
+
+                    <span class="rincian-label">
+                        Tanggal Tebus
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${tanggalIndo(tanggalTebus)}
+                    </strong>
+
+                </div>
+
+                <div class="rincian-row">
+
+                    <span class="rincian-label">
+                        Status
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${keterangan}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="rincian-section">
+
+                <div class="rincian-section-title">
+                    Rincian Biaya
+                </div>
+
+                <div class="rincian-row rincian-biaya">
+
+                    <span class="rincian-label">
+                        Bunga Keterlambatan
+                        <small>
+                            ${jumlahBunga} × ${persen}%
+                        </small>
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(bungaKeterlambatan)}
+                    </strong>
+
+                </div>
+
+
+                <div class="rincian-row rincian-biaya">
+
+                    <span class="rincian-label">
+                        Denda
+                        <small>
+                            ${hariLewat > 0
+                                ? `${hariLewat} hari × Rp10.000`
+                                : "Tidak ada denda"
+                            }
+                        </small>
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(denda)}
+                    </strong>
+
+                </div>
+
+
+                <div class="rincian-row rincian-biaya">
+
+                    <span class="rincian-label">
+                        Sisa Denda
+                    </span>
+
+                    <strong class="rincian-value">
+                        ${rupiah(sisaDenda)}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="rincian-total">
+
+                <span>
+                    TOTAL TEBUS
+                </span>
+
+                <strong>
+                    ${rupiah(total)}
+                </strong>
+
+            </div>
+
         </div>
 
-        <div class="baris">
-            <span>Jatuh Tempo</span>
-            <strong>${tanggalIndo(tempo)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Tanggal Tebus</span>
-            <strong>${tanggalIndo(tanggalTebus)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Keterangan</span>
-            <strong>${keterangan}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Bunga Keterlambatan</span>
-            <strong>
-                ${rupiah(bungaKeterlambatan)}
-                (${jumlahBunga}x bunga ${persen}%)
-            </strong>
-        </div>
-
-        <div class="baris">
-            <span>Denda</span>
-            <strong>${rupiah(denda)}</strong>
-        </div>
-
-        <div class="baris">
-            <span>Sisa Denda</span>
-            <strong>${rupiah(sisaDenda)}</strong>
-        </div>
-
-        <div class="baris total">
-            <span>TOTAL TEBUS</span>
-            <strong>${rupiah(total)}</strong>
-        </div>
 
         <button
             class="btn-salin"
@@ -1526,10 +1832,6 @@ function buatPesanWhatsApp(
     bunga
 ) {
 
-    /* =========================
-       LELANG
-       ========================= */
-
     if (
         selisih < 0 &&
         Math.abs(selisih) > 10
@@ -1541,10 +1843,6 @@ function buatPesanWhatsApp(
 
     }
 
-
-    /* =========================
-       KETERANGAN WAKTU
-       ========================= */
 
     let keteranganWaktu = "";
 
@@ -1584,10 +1882,6 @@ function buatPesanWhatsApp(
     }
 
 
-    /* =========================
-       PESAN 5%
-       ========================= */
-
     if (bunga === "5") {
 
         return `*"PT. GADAI OGAN BARU"* 
@@ -1603,10 +1897,6 @@ Jika barang jaminan *ingin ditebus dan barang jaminannya masih ada* dan belum te
 
     }
 
-
-    /* =========================
-       PESAN 10%
-       ========================= */
 
     return `*"PT. GADAI OGAN BARU"* 
 *OUTLET 07*
