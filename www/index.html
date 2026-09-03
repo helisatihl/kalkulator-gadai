@@ -12,6 +12,7 @@
 <title>Kalkulator Gadai</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -80,8 +81,6 @@ body {
     border-color: #092328;
 }
 
-/* WARNA FOLLOW UP #249D8F */
-
 .nav .active-followup {
     background: #249D8F;
     color: white;
@@ -129,8 +128,6 @@ select:focus {
     border-color: #FFA259;
     box-shadow: 0 0 0 3px rgba(255,162,89,0.15);
 }
-
-/* Focus khusus Follow Up */
 
 #menuFollowUp input:focus,
 #menuFollowUp select:focus {
@@ -219,21 +216,15 @@ button {
     transform: scale(0.97);
 }
 
-/* Tombol WA Follow Up */
-
 .btn-wa {
     background: #249D8F;
     color: white;
 }
 
-/* Tombol Telepon */
-
 .btn-call {
     background: #249D8F;
     color: white;
 }
-
-/* Tombol Salin */
 
 .btn-copy-followup {
     background: #249D8F;
@@ -402,8 +393,6 @@ button {
 
 <div class="container">
 
-<!-- ================= HEADER ================= -->
-
 <div class="header">
 
     <h1>Kalkulator Gadai</h1>
@@ -413,9 +402,6 @@ button {
     </p>
 
 </div>
-
-
-<!-- ================= NAVIGASI ================= -->
 
 <div class="nav">
 
@@ -1540,7 +1526,9 @@ function buatPesanWhatsApp(
     bunga
 ) {
 
-    /* LELANG */
+    /* =========================
+       LELANG
+       ========================= */
 
     if (
         selisih < 0 &&
@@ -1552,6 +1540,11 @@ function buatPesanWhatsApp(
 *"PT. GADAI OGAN BARU"* bahwa barang gadai Bapak/Ibu akan di *LELANG*, dikarenakan *sudah lewat lebih 10 hari* dari tgl jatuh tempo. Terima kasih 🙏`;
 
     }
+
+
+    /* =========================
+       KETERANGAN WAKTU
+       ========================= */
 
     let keteranganWaktu = "";
 
@@ -1590,14 +1583,17 @@ function buatPesanWhatsApp(
 
     }
 
-    /* PESAN 5% */
+
+    /* =========================
+       PESAN 5%
+       ========================= */
 
     if (bunga === "5") {
 
         return `*"PT. GADAI OGAN BARU"* 
 *OUTLET 07*
 
-Barang gadai Bapak/Ibu _*${keteranganWaktu}*_ .Segera di tebus/diperpanjang, jika lewat 1 hari dari tanggal jatuh tempo maka akan dikenakan *denda Rp.10.000/harinya* . Jika dalam tempo 10 hari setelah tanggal jatuh tempo barang tidak diperpanjang/ditebus maka barang gadai bapak/ibu akan kami lelang/kami jual. Maksimal perpanjang jatuh tempo gadai hanya 4 kali.
+Barang gadai Bapak/Ibu _*${keteranganWaktu}*_Segera di tebus/diperpanjang, jika lewat 1 hari dari tanggal jatuh tempo maka akan dikenakan *denda Rp.10.000/harinya* . Jika dalam tempo 10 hari setelah tanggal jatuh tempo barang tidak diperpanjang/ditebus maka barang gadai bapak/ibu akan kami lelang/kami jual. Maksimal perpanjang jatuh tempo gadai hanya 4 kali.
 
 *Apabila bapak/ibu mau perpanjang segera datang ke *PT. GADAI OGAN BARU* atau *via Transfer ke rekening kami (hubungi via whatsapp)*
 
@@ -1607,7 +1603,10 @@ Jika barang jaminan *ingin ditebus dan barang jaminannya masih ada* dan belum te
 
     }
 
-    /* PESAN 10% */
+
+    /* =========================
+       PESAN 10%
+       ========================= */
 
     return `*"PT. GADAI OGAN BARU"* 
 *OUTLET 07*
