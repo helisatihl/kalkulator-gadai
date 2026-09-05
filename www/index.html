@@ -192,6 +192,118 @@ button {
     transform: scale(0.98);
 }
 
+/* ================= BULK FOLLOW UP ================= */
+
+.input-nomor-wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+.input-nomor-wrapper input {
+    flex: 1;
+}
+
+.btn-tambah-nomor {
+    width: 52px;
+    border: none;
+    border-radius: 10px;
+    background: #249D8F;
+    color: white;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.daftar-nomor {
+    margin: 10px 0 15px;
+    padding: 12px;
+    background: #f4fbfa;
+    border: 1px solid #249D8F;
+    border-radius: 10px;
+}
+
+.daftar-nomor-header {
+    font-weight: bold;
+    color: #249D8F;
+    margin-bottom: 8px;
+}
+
+.nomor-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 0;
+    border-bottom: 1px dashed #ccc;
+}
+
+.nomor-item:last-of-type {
+    border-bottom: none;
+}
+
+.nomor-text {
+    font-size: 14px;
+    word-break: break-word;
+}
+
+.btn-hapus-nomor {
+    flex-shrink: 0;
+    border: none;
+    background: #ffe9e9;
+    color: #b22;
+    border-radius: 7px;
+    padding: 6px 9px;
+    font-weight: bold;
+}
+
+.btn-hapus-semua {
+    width: 100%;
+    margin-top: 10px;
+    padding: 9px;
+    border: none;
+    border-radius: 8px;
+    background: #f1f1f1;
+    color: #555;
+    font-weight: bold;
+}
+
+.btn-kirim-semua-wa {
+    width: 100%;
+    padding: 14px;
+    margin-top: 9px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #128C7E;
+    color: white;
+    font-weight: bold;
+}
+
+.progress-bulk-wa {
+    display: none;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #eaf8f6;
+    border: 1px solid #249D8F;
+    color: #176b62;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.btn-berikutnya-wa {
+    display: none;
+    width: 100%;
+    padding: 14px;
+    margin-top: 9px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #249D8F;
+    color: white;
+    font-weight: bold;
+}
+
 /* ================= FOLLOW UP ACTION ================= */
 
 .followup-actions {
@@ -517,6 +629,10 @@ button {
         font-size: 17px;
     }
 
+    .input-nomor-wrapper input {
+        font-size: 16px;
+    }
+
 }
 
 </style>
@@ -571,6 +687,7 @@ button {
 
     <div class="field">
         <label>Nilai Gadai</label>
+
         <input
             type="number"
             id="nilaiGadai"
@@ -580,6 +697,7 @@ button {
 
     <div class="field">
         <label>Tanggal Jatuh Tempo Awal</label>
+
         <input
             type="date"
             id="tanggalJatuhTempo">
@@ -587,6 +705,7 @@ button {
 
     <div class="field">
         <label>Tanggal Perpanjang</label>
+
         <input
             type="date"
             id="tanggalProses">
@@ -603,6 +722,7 @@ button {
 
     <div class="field">
         <label>Sisa Denda</label>
+
         <input
             type="number"
             id="sisaDenda"
@@ -641,6 +761,7 @@ button {
     </h2>
 
     <div class="field">
+
         <label>
             Nilai Gadai / Pokok Pinjaman
         </label>
@@ -653,6 +774,7 @@ button {
     </div>
 
     <div class="field">
+
         <label>Tanggal Jatuh Tempo</label>
 
         <input
@@ -661,6 +783,7 @@ button {
     </div>
 
     <div class="field">
+
         <label>Tanggal Tebus</label>
 
         <input
@@ -669,15 +792,18 @@ button {
     </div>
 
     <div class="field">
+
         <label>Pilih Bunga</label>
 
         <select id="bungaTebus">
             <option value="5">5% / 15 Hari</option>
             <option value="10">10% / 30 Hari</option>
         </select>
+
     </div>
 
     <div class="field">
+
         <label>Sisa Denda</label>
 
         <input
@@ -723,12 +849,26 @@ button {
             Nomor WhatsApp / HP Nasabah
         </label>
 
-        <input
-            type="tel"
-            id="nomorHP"
-            placeholder="081234567890">
+        <div class="input-nomor-wrapper">
+
+            <input
+                type="tel"
+                id="nomorHP"
+                placeholder="081234567890">
+
+            <button
+                type="button"
+                class="btn-tambah-nomor"
+                onclick="tambahNomorFollowUp()">
+                +
+            </button>
+
+        </div>
 
     </div>
+
+    <div id="daftarNomorFollowUp"></div>
+
 
     <div class="field">
 
@@ -742,6 +882,7 @@ button {
 
     </div>
 
+
     <div class="field">
 
         <label>
@@ -753,6 +894,7 @@ button {
             id="tanggalHariIni">
 
     </div>
+
 
     <div class="field">
 
@@ -774,17 +916,43 @@ button {
 
     </div>
 
+
     <button
         class="btn-buat-followup"
         onclick="buatPesanFollowUp()">
         BUAT PESAN
     </button>
 
+
+    <button
+        type="button"
+        class="btn-kirim-semua-wa"
+        onclick="kirimSemuaWhatsApp()">
+        🚀 KIRIM SEMUA WA
+    </button>
+
+
+    <div
+        id="progressBulkWA"
+        class="progress-bulk-wa">
+    </div>
+
+
+    <button
+        type="button"
+        id="btnBerikutnyaWA"
+        class="btn-berikutnya-wa"
+        onclick="kirimBerikutnyaWhatsApp()">
+        ➡️ NASABAH BERIKUTNYA
+    </button>
+
+
     <button
         class="btn-reset"
         onclick="resetFollowUp()">
         RESET
     </button>
+
 
     <div
         id="hasilFollowUp"
@@ -826,6 +994,9 @@ let teksTebus = "";
 
 let pesanFollowUp = "";
 let pesanLamaFollowUp = "";
+
+let daftarNomorFollowUp = [];
+let indexBulkWA = 0;
 
 
 /* =====================================================
@@ -1674,10 +1845,13 @@ function buatPesanFollowUp() {
             "bungaFollowUp"
         ).value;
 
-    if (!nomor) {
+    if (
+        !nomor &&
+        daftarNomorFollowUp.length === 0
+    ) {
 
         alert(
-            "Silakan masukkan nomor HP nasabah."
+            "Silakan masukkan minimal satu nomor HP nasabah."
         );
 
         return;
@@ -1986,25 +2160,10 @@ ${keteranganLama} Segera melakukan perpanjangan atau ditebus untuk menghindari d
 
 
 /* =====================================================
-   TELEPON NASABAH
+   FORMAT NOMOR WHATSAPP
 ===================================================== */
 
-function teleponNasabah() {
-
-    const nomorHP =
-        document.getElementById(
-            "nomorHP"
-        ).value.trim();
-
-    if (!nomorHP) {
-
-        alert(
-            "Silakan masukkan nomor HP nasabah."
-        );
-
-        return;
-
-    }
+function formatNomorWA(nomorHP) {
 
     let nomor =
         nomorHP.replace(
@@ -2025,6 +2184,46 @@ function teleponNasabah() {
         nomor.length > 15
     ) {
 
+        return null;
+
+    }
+
+    return nomor;
+
+}
+
+
+/* =====================================================
+   TAMBAH NOMOR FOLLOW UP
+===================================================== */
+
+function tambahNomorFollowUp() {
+
+    const input =
+        document.getElementById(
+            "nomorHP"
+        );
+
+    const nomorInput =
+        input.value.trim();
+
+    if (!nomorInput) {
+
+        alert(
+            "Masukkan nomor HP terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+    const nomor =
+        formatNomorWA(
+            nomorInput
+        );
+
+    if (!nomor) {
+
         alert(
             "Nomor HP tidak valid."
         );
@@ -2033,14 +2232,180 @@ function teleponNasabah() {
 
     }
 
-    window.location.href =
-        "tel:+" + nomor;
+    if (
+        daftarNomorFollowUp.includes(nomor)
+    ) {
+
+        alert(
+            "Nomor tersebut sudah ada di daftar."
+        );
+
+        return;
+
+    }
+
+    daftarNomorFollowUp.push(
+        nomor
+    );
+
+    input.value = "";
+
+    tampilkanDaftarNomorFollowUp();
 
 }
 
 
 /* =====================================================
-   KIRIM WHATSAPP
+   TAMPILKAN DAFTAR NOMOR
+===================================================== */
+
+function tampilkanDaftarNomorFollowUp() {
+
+    const container =
+        document.getElementById(
+            "daftarNomorFollowUp"
+        );
+
+    if (
+        daftarNomorFollowUp.length === 0
+    ) {
+
+        container.innerHTML = "";
+
+        return;
+
+    }
+
+    let html = `
+
+        <div class="daftar-nomor">
+
+            <div class="daftar-nomor-header">
+                📱 Daftar Nasabah
+                (${daftarNomorFollowUp.length})
+            </div>
+
+    `;
+
+    daftarNomorFollowUp.forEach(
+        function(nomor, index) {
+
+            html += `
+
+                <div class="nomor-item">
+
+                    <span class="nomor-text">
+                        ${index + 1}.
+                        +${nomor}
+                    </span>
+
+                    <button
+                        type="button"
+                        class="btn-hapus-nomor"
+                        onclick="hapusNomorFollowUp(${index})">
+                        ✕
+                    </button>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+    html += `
+
+            <button
+                type="button"
+                class="btn-hapus-semua"
+                onclick="hapusSemuaNomorFollowUp()">
+                🗑️ HAPUS SEMUA NOMOR
+            </button>
+
+        </div>
+
+    `;
+
+    container.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   HAPUS SATU NOMOR
+===================================================== */
+
+function hapusNomorFollowUp(index) {
+
+    daftarNomorFollowUp.splice(
+        index,
+        1
+    );
+
+    if (
+        indexBulkWA >=
+        daftarNomorFollowUp.length
+    ) {
+
+        indexBulkWA =
+            Math.max(
+                0,
+                daftarNomorFollowUp.length - 1
+            );
+
+    }
+
+    tampilkanDaftarNomorFollowUp();
+
+}
+
+
+/* =====================================================
+   HAPUS SEMUA NOMOR
+===================================================== */
+
+function hapusSemuaNomorFollowUp() {
+
+    if (
+        daftarNomorFollowUp.length === 0
+    ) {
+
+        return;
+
+    }
+
+    if (
+        !confirm(
+            "Hapus semua nomor dari daftar?"
+        )
+    ) {
+
+        return;
+
+    }
+
+    daftarNomorFollowUp = [];
+
+    indexBulkWA = 0;
+
+    tampilkanDaftarNomorFollowUp();
+
+    document.getElementById(
+        "progressBulkWA"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "btnBerikutnyaWA"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   KIRIM WHATSAPP BIASA
 ===================================================== */
 
 function kirimWhatsAppFollowUp() {
@@ -2070,24 +2435,12 @@ function kirimWhatsAppFollowUp() {
 
     }
 
-    let nomor =
-        nomorHP.replace(
-            /\D/g,
-            ""
+    const nomor =
+        formatNomorWA(
+            nomorHP
         );
 
-    if (nomor.startsWith("0")) {
-
-        nomor =
-            "62" +
-            nomor.substring(1);
-
-    }
-
-    if (
-        nomor.length < 10 ||
-        nomor.length > 15
-    ) {
+    if (!nomor) {
 
         alert(
             "Nomor HP tidak valid."
@@ -2109,6 +2462,243 @@ function kirimWhatsAppFollowUp() {
         url,
         "_blank"
     );
+
+}
+
+
+/* =====================================================
+   KIRIM SEMUA WHATSAPP
+===================================================== */
+
+function kirimSemuaWhatsApp() {
+
+    if (
+        daftarNomorFollowUp.length === 0
+    ) {
+
+        alert(
+            "Tambahkan nomor nasabah terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+    if (!pesanFollowUp) {
+
+        alert(
+            "Silakan buat pesan terlebih dahulu."
+        );
+
+        return;
+
+    }
+
+    indexBulkWA = 0;
+
+    bukaWhatsAppBulk();
+
+}
+
+
+/* =====================================================
+   BUKA WHATSAPP BULK
+===================================================== */
+
+function bukaWhatsAppBulk() {
+
+    if (
+        indexBulkWA >=
+        daftarNomorFollowUp.length
+    ) {
+
+        selesaiBulkWA();
+
+        return;
+
+    }
+
+    const nomor =
+        daftarNomorFollowUp[
+            indexBulkWA
+        ];
+
+    const url =
+        "https://wa.me/" +
+        nomor +
+        "?text=" +
+        encodeURIComponent(
+            pesanFollowUp
+        );
+
+    const progress =
+        document.getElementById(
+            "progressBulkWA"
+        );
+
+    progress.style.display =
+        "block";
+
+    progress.innerHTML = `
+
+        📤 Nasabah
+        <strong>
+            ${indexBulkWA + 1}
+            /
+            ${daftarNomorFollowUp.length}
+        </strong>
+
+        <br>
+
+        <span style="
+            font-weight:normal;
+        ">
+            +${nomor}
+        </span>
+
+        <br>
+
+        <small style="
+            font-weight:normal;
+        ">
+            Pesan sudah disiapkan di WhatsApp.
+        </small>
+
+    `;
+
+    const tombol =
+        document.getElementById(
+            "btnBerikutnyaWA"
+        );
+
+    tombol.style.display =
+        "block";
+
+    if (
+        indexBulkWA ===
+        daftarNomorFollowUp.length - 1
+    ) {
+
+        tombol.innerHTML =
+            "✅ SELESAI";
+
+    }
+
+    else {
+
+        tombol.innerHTML =
+            "➡️ NASABAH BERIKUTNYA";
+
+    }
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+/* =====================================================
+   NASABAH BERIKUTNYA
+===================================================== */
+
+function kirimBerikutnyaWhatsApp() {
+
+    if (
+        daftarNomorFollowUp.length === 0
+    ) {
+
+        return;
+
+    }
+
+    if (
+        indexBulkWA ===
+        daftarNomorFollowUp.length - 1
+    ) {
+
+        selesaiBulkWA();
+
+        return;
+
+    }
+
+    indexBulkWA++;
+
+    bukaWhatsAppBulk();
+
+}
+
+
+/* =====================================================
+   SELESAI BULK
+===================================================== */
+
+function selesaiBulkWA() {
+
+    const progress =
+        document.getElementById(
+            "progressBulkWA"
+        );
+
+    progress.style.display =
+        "block";
+
+    progress.innerHTML =
+        "✅ Semua nasabah sudah diproses.";
+
+    const tombol =
+        document.getElementById(
+            "btnBerikutnyaWA"
+        );
+
+    tombol.style.display =
+        "none";
+
+    indexBulkWA = 0;
+
+}
+
+
+/* =====================================================
+   TELEPON NASABAH
+===================================================== */
+
+function teleponNasabah() {
+
+    const nomorHP =
+        document.getElementById(
+            "nomorHP"
+        ).value.trim();
+
+    if (!nomorHP) {
+
+        alert(
+            "Silakan masukkan nomor HP nasabah."
+        );
+
+        return;
+
+    }
+
+    const nomor =
+        formatNomorWA(
+            nomorHP
+        );
+
+    if (!nomor) {
+
+        alert(
+            "Nomor HP tidak valid."
+        );
+
+        return;
+
+    }
+
+    window.location.href =
+        "tel:+" + nomor;
 
 }
 
@@ -2377,6 +2967,22 @@ function resetFollowUp() {
 
     pesanFollowUp = "";
     pesanLamaFollowUp = "";
+
+    daftarNomorFollowUp = [];
+
+    indexBulkWA = 0;
+
+    tampilkanDaftarNomorFollowUp();
+
+    document.getElementById(
+        "progressBulkWA"
+    ).style.display =
+        "none";
+
+    document.getElementById(
+        "btnBerikutnyaWA"
+    ).style.display =
+        "none";
 
 }
 
